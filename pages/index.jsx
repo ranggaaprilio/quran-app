@@ -19,8 +19,10 @@ export default function Home() {
       
       <main className={styles.main}>
         <div className="container">
-        <h1 className="fs-2 fw-2 my-2 font-custom">Qur`an Online</h1>
-        <input className="form-control mb-5" type="text" placeholder="Cari nama surah" aria-label="default input example"></input>
+        <div style={{position:"sticky",top:80,zIndex:5, background:"white",paddingBottom:5,paddingTop:3}}>
+            <h1 className="fs-2 fw-2 my-2 font-custom">Qur`an Online</h1>
+            <input className="form-control mb-5" type="text" placeholder="Cari nama surah" aria-label="default input example"></input>
+        </div>
           <div className="row">
             <div className="col-sm-6 mb-2">
               <div className="card" >
