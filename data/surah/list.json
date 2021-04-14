@@ -1,0 +1,88 @@
+{
+	"data": [{
+			"number": "1",
+			"name": "الفاتحة",
+			"name_latin": "Al-Fatihah",
+			"number_of_ayah": "7"
+		},
+		{
+			"number": "2",
+			"name": "البقرة",
+			"name_latin": "Al-Baqarah",
+			"number_of_ayah": "286"
+		},
+		{
+			"number": "3",
+			"name": "اٰل عمران",
+			"name_latin": "Ali 'Imran",
+			"number_of_ayah": "200"
+		},
+		{
+			"number": "4",
+			"name": "النساۤء",
+			"name_latin": "An-Nisa'",
+			"number_of_ayah": "176"
+		},
+		{
+			"number": "5",
+			"name": "الماۤئدة",
+			"name_latin": "Al-Ma'idah",
+			"number_of_ayah": "120"
+		},
+		{
+			"number": "6",
+			"name": "الانعام",
+			"name_latin": "Al-An'am",
+			"number_of_ayah": "165"
+		},
+		{
+			"number": "7",
+			"name": "الاعراف",
+			"name_latin": "Al-A'raf",
+			"number_of_ayah": "206"
+		},
+		{
+			"number": "8",
+			"name": "الانفال",
+			"name_latin": "Al-Anfal",
+			"number_of_ayah": "75"
+		},
+		{
+			"number": "9",
+			"name": "التوبة",
+			"name_latin": "At-Taubah",
+			"number_of_ayah": "129"
+		},
+		{
+			"number": "10",
+			"name": "يونس",
+			"name_latin": "Yunus",
+			"number_of_ayah": "109"
+		},
+		{
+			"number": "11",
+			"name": "هود",
+			"name_latin": "Hud",
+			"number_of_ayah": "123"
+		},
+		{
+			"number": "12",
+			"name": "يوسف",
+			"name_latin": "Yusuf",
+			"number_of_ayah": "111"
+		},
+		{
+			"number": "13",
+			"name": "الرّعد",
+			"name_latin": "Ar-Ra'd",
+			"number_of_ayah": "43"
+		},
+		{
+			"number": "14",
+			"name": "ابرٰهيم",
+			"name_latin": "Ibrahim",
+			"number_of_ayah": "52"
+		}
+
+	]
+}

@@ -1,7 +1,17 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import {GetSurah} from '../helper/request' 
+import {useEffect,useState} from 'react'
 
-export default function Home() {
+export default function Home(props) {
+
+const [surah,setSurah]= useState([])
+
+  useEffect(() => {
+    const{data}=props.list.allSurah.result
+    console.log(data,"listing");
+    setSurah(data)
+  }, [])
   return (
     <div className={styles.container}>
       <Head>
@@ -10,22 +20,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
       </Head>
-  
-     
-  
-     
-     
-   
-      
       <main className={styles.main}>
         <div className=" container fixed-top bg-white">
           <h1 className="fs-2 fw-2 my-2 font-custom">Qur`an Online</h1>
           <input className="form-control mb-3" type="text" placeholder="Cari nama surah" aria-label="default input example"></input>
         </div>
         <div className="container" style={{ marginTop: 111 }}>
-         
-          <div className="row">
-            <div className="col-sm-6 mb-2">
+        <div className="row">
+         {surah.map((v,i)=>(
+             <div className="col-sm-6 mb-2">
               <div className="card" >
                 <div className="card-body">
                   <h5 className="card-title">Card title</h5>
@@ -36,149 +39,10 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-2">
-              <div className="card" >
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="card-link">Card link</a>
-                  <a href="#" className="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
+         )
+         )}
+          
+          
           </div>
         </div>
      
@@ -196,4 +60,14 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  
+  const allSurah= await GetSurah();
+  return {
+    props: {
+      list: {allSurah},
+    },
+  };
 }
