@@ -82,6 +82,144 @@
 			"name": "ابرٰهيم",
 			"name_latin": "Ibrahim",
 			"number_of_ayah": "52"
+		},
+		{
+			"number": "15",
+			"name": "الحجر",
+			"name_latin": "Al-Hijr",
+			"number_of_ayah": "99"
+		},
+		{
+			"number": "16",
+			"name": "النحل",
+			"name_latin": "An-Nahl",
+			"number_of_ayah": "128"
+		},
+		{
+			"number": "17",
+			"name": "الاسراۤء",
+			"name_latin": "Al-Isra'",
+			"number_of_ayah": "111"
+		},
+		{
+			"number": "18",
+			"name": "الكهف",
+			"name_latin": "Al-Kahf",
+			"number_of_ayah": "110"
+		},
+		{
+			"number": "19",
+			"name": "مريم",
+			"name_latin": "Maryam",
+			"number_of_ayah": "98"
+		},
+		{
+			"number": "20",
+			"name": "طٰهٰ",
+			"name_latin": "Taha",
+			"number_of_ayah": "135"
+		},
+		{
+			"number": "21",
+			"name": "الانبياۤء",
+			"name_latin": "Al-Anbiya'",
+			"number_of_ayah": "112"
+		},
+		{
+			"number": "22",
+			"name": "الحج",
+			"name_latin": "Al-Hajj",
+			"number_of_ayah": "78"
+		},
+		{
+			"number": "23",
+			"name": "المؤمنون",
+			"name_latin": "Al-Mu'minun",
+			"number_of_ayah": "118"
+		},
+		{
+			"number": "24",
+			"name": "النّور",
+			"name_latin": "An-Nur",
+			"number_of_ayah": "64"
+		},
+		{
+			"number": "25",
+			"name": "الفرقان",
+			"name_latin": "Al-Furqan",
+			"number_of_ayah": "77"
+		},
+		{
+			"number": "26",
+			"name": "الشعراۤء",
+			"name_latin": "Asy-Syu'ara'",
+			"number_of_ayah": "227"
+		},
+		{
+			"number": "27",
+			"name": "النمل",
+			"name_latin": "An-Naml",
+			"number_of_ayah": "93"
+		},
+		{
+			"number": "28",
+			"name": "القصص",
+			"name_latin": "Al-Qasas",
+			"number_of_ayah": "88"
+		},
+		{
+			"number": "29",
+			"name": "العنكبوت",
+			"name_latin": "Al-'Ankabut",
+			"number_of_ayah": "69"
+		},
+		{
+			"number": "30",
+			"name": "الرّوم",
+			"name_latin": "Ar-Rum",
+			"number_of_ayah": "60"
+		},
+		{
+			"number": "31",
+			"name": "لقمٰن",
+			"name_latin": "Luqman",
+			"number_of_ayah": "34"
+		},
+		{
+			"number": "32",
+			"name": "السّجدة",
+			"name_latin": "As-Sajdah",
+			"number_of_ayah": "30"
+		},
+		{
+			"number": "33",
+			"name": "الاحزاب",
+			"name_latin": "Al-Ahzab",
+			"number_of_ayah": "73"
+		},
+		{
+			"number": "34",
+			"name": "سبأ",
+			"name_latin": "Saba'",
+			"number_of_ayah": "54"
+		},
+		{
+			"number": "35",
+			"name": "فاطر",
+			"name_latin": "Fatir",
+			"number_of_ayah": "45"
+		},
+		{
+			"number": "36",
+			"name": "يٰسۤ",
+			"name_latin": "Yasin",
+			"number_of_ayah": "83"
+		},
+		{
+			"number": "37",
+			"name": "الصّٰۤفّٰت",
+			"name_latin": "As-Saffat",
+			"number_of_ayah": "182"
 		}
 
 	]
