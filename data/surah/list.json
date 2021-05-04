@@ -412,6 +412,144 @@
 			"name": "الحاۤقّة",
 			"name_latin": "Al-Haqqah",
 			"number_of_ayah": "52"
+		},
+		{
+			"number": "70",
+			"name": "المعارج",
+			"name_latin": "Al-Ma'arij",
+			"number_of_ayah": "44"
+		},
+		{
+			"number": "71",
+			"name": "نوح",
+			"name_latin": "Nuh",
+			"number_of_ayah": "28"
+		},
+		{
+			"number": "72",
+			"name": "الجن",
+			"name_latin": "Al-Jinn",
+			"number_of_ayah": "28"
+		},
+		{
+			"number": "73",
+			"name": "المزّمّل",
+			"name_latin": "Al-Muzzammil",
+			"number_of_ayah": "20"
+		},
+		{
+			"number": "74",
+			"name": "المدّثّر",
+			"name_latin": "Al-Muddassir",
+			"number_of_ayah": "56"
+		},
+		{
+			"number": "75",
+			"name": "القيٰمة",
+			"name_latin": "Al-Qiyamah",
+			"number_of_ayah": "40"
+		},
+		{
+			"number": "76",
+			"name": "الانسان",
+			"name_latin": "Al-Insan",
+			"number_of_ayah": "31"
+		},
+		{
+			"number": "77",
+			"name": "المرسلٰت",
+			"name_latin": "Al-Mursalat",
+			"number_of_ayah": "50"
+		},
+		{
+			"number": "78",
+			"name": "النبأ",
+			"name_latin": "An-Naba'",
+			"number_of_ayah": "40"
+		},
+		{
+			"number": "79",
+			"name": "النّٰزعٰت",
+			"name_latin": "An-Nazi'at",
+			"number_of_ayah": "46"
+		},
+		{
+			"number": "80",
+			"name": "عبس",
+			"name_latin": "'Abasa",
+			"number_of_ayah": "42"
+		},
+		{
+			"number": "81",
+			"name": "التكوير",
+			"name_latin": "At-Takwir",
+			"number_of_ayah": "29"
+		},
+		{
+			"number": "82",
+			"name": "الانفطار",
+			"name_latin": "Al-Infitar",
+			"number_of_ayah": "19"
+		},
+		{
+			"number": "83",
+			"name": "المطفّفين",
+			"name_latin": "Al-Mutaffifin",
+			"number_of_ayah": "36"
+		},
+		{
+			"number": "84",
+			"name": "الانشقاق",
+			"name_latin": "Al-Insyiqaq",
+			"number_of_ayah": "25"
+		},
+		{
+			"number": "85",
+			"name": "البروج",
+			"name_latin": "Al-Buruj",
+			"number_of_ayah": "22"
+		},
+		{
+			"number": "86",
+			"name": "الطارق",
+			"name_latin": "At-Tariq",
+			"number_of_ayah": "17"
+		},
+		{
+			"number": "87",
+			"name": "الاعلى",
+			"name_latin": "Al-A'la",
+			"number_of_ayah": "19"
+		},
+		{
+			"number": "88",
+			"name": "الغاشية",
+			"name_latin": "Al-Gasyiyah",
+			"number_of_ayah": "26"
+		},
+		{
+			"number": "89",
+			"name": "الفجر",
+			"name_latin": "Al-Fajr",
+			"number_of_ayah": "30"
+		},
+		{
+			"number": "90",
+			"name": "البلد",
+			"name_latin": "Al-Balad",
+			"number_of_ayah": "20"
+		},
+		{
+			"number": "91",
+			"name": "الشمس",
+			"name_latin": "Asy-Syams",
+			"number_of_ayah": "15"
+		},
+		{
+			"number": "92",
+			"name": "الّيل",
+			"name_latin": "Al-Lail",
+			"number_of_ayah": "21"
 		}
 
 	]
