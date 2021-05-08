@@ -7,10 +7,16 @@ const request = axios.create({
 });
 
 
-export const GetSurah=async()=>{
+export const GetSurah=async(id=0)=>{
     try {
-        const res=await request.get('/api/surah')
-        return res.data
+        if (id==0){
+            const res=await request.get('/api/surah')
+            return res.data
+        }
+
+        const res=await request.get(`/api/surah/${id}`)
+            return res.data
+        
     } catch (error) {
         console.log(error);
         return error.message

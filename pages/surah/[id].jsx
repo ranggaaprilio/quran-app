@@ -1,9 +1,23 @@
-import {Fragment} from "react"
+import {Fragment,useEffect} from "react"
 import Head from "next/head"
+import { useRouter } from "next/router";
+import {GetSurah} from '../../helper/request' 
+
 
 
 
 export default function surah(props) {
+  
+  const router=useRouter()
+
+  useEffect(() => {
+    
+    console.log(router.query)
+    console.log(props.list.surah.result,'ini result');
+   
+  }, [router])
+
+
 return(
 <Fragment>
     <Head>
@@ -24,13 +38,25 @@ return(
 )
 }
 
-// export async function getStaticProps(context) {
-//     const { params } = context;
-//     console.log(params);
-//     const allSurah= await GetSurah();
-//     return {
-//       props: {
-//         list: {allSurah},
-//       },
-//     };
-//   }
+export async function getStaticProps(context) {
+    const { params } = context;
+    const pid=params.id
+    const surah= await GetSurah(pid);
+    return {
+      props: {
+        list: {surah},
+      },
+    };
+  }
+
+  export function getStaticPaths() {
+  const newArr=[]
+   for (let index = 1; index <= 114; index++) {
+     newArr.push({params:{id:index.toString()}})
+     
+   }
+    return {
+      paths: newArr,
+      fallback: false,
+    };
+  }

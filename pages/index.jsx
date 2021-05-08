@@ -39,7 +39,7 @@ const [surah,setSurah]= useState([])
              <div className="card" >
                <div className="card-body">
                  <h4 dir="rtl" lang="ar"className="card-title" style={{fontFamily:'Amiri'}}>{v.name}</h4>
-                 <h6 className="card-subtitle mb-2 text-muted"><Link href="/surah/1">{v.name_latin}</Link></h6>
+                 <h6 className="card-subtitle mb-2 text-muted"><Link href={`/surah/${v.number}`}>{v.name_latin}</Link></h6>
                  <p className="card-text">Jumlah Ayat:&nbsp;{v.number_of_ayah}</p> 
                </div>
              </div>

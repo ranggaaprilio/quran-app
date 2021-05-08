@@ -550,6 +550,138 @@
 			"name": "الّيل",
 			"name_latin": "Al-Lail",
 			"number_of_ayah": "21"
+		},
+		{
+			"number": "93",
+			"name": "الضحى",
+			"name_latin": "Ad-Duha",
+			"number_of_ayah": "11"
+		},
+		{
+			"number": "94",
+			"name": "الشرح",
+			"name_latin": "Asy-Syarh",
+			"number_of_ayah": "8"
+		},
+		{
+			"number": "95",
+			"name": "التين",
+			"name_latin": "At-Tin",
+			"number_of_ayah": "8"
+		},
+		{
+			"number": "96",
+			"name": "العلق",
+			"name_latin": "Al-'Alaq",
+			"number_of_ayah": "19"
+		},
+		{
+			"number": "97",
+			"name": "القدر",
+			"name_latin": "Al-Qadr",
+			"number_of_ayah": "5"
+		},
+		{
+			"number": "98",
+			"name": "البيّنة",
+			"name_latin": "Al-Bayyinah",
+			"number_of_ayah": "8"
+		},
+		{
+			"number": "99",
+			"name": "الزلزلة",
+			"name_latin": "Az-Zalzalah",
+			"number_of_ayah": "8"
+		},
+		{
+			"number": "100",
+			"name": "العٰديٰت",
+			"name_latin": "Al-'Adiyat",
+			"number_of_ayah": "11"
+		},
+		{
+			"number": "101",
+			"name": "القارعة",
+			"name_latin": "Al-Qari'ah",
+			"number_of_ayah": "11"
+		},
+		{
+			"number": "102",
+			"name": "التكاثر",
+			"name_latin": "At-Takasur",
+			"number_of_ayah": "8"
+		},
+		{
+			"number": "103",
+			"name": "العصر",
+			"name_latin": "Al-'Asr",
+			"number_of_ayah": "3"
+		},
+		{
+			"number": "104",
+			"name": "الهمزة",
+			"name_latin": "Al-Humazah",
+			"number_of_ayah": "9"
+		},
+		{
+			"number": "105",
+			"name": "الفيل",
+			"name_latin": "Al-Fil",
+			"number_of_ayah": "5"
+		},
+		{
+			"number": "106",
+			"name": "قريش",
+			"name_latin": "Quraisy",
+			"number_of_ayah": "4"
+		},
+		{
+			"number": "107",
+			"name": "الماعون",
+			"name_latin": "Al-Ma'un",
+			"number_of_ayah": "7"
+		},
+		{
+			"number": "108",
+			"name": "الكوثر",
+			"name_latin": "Al-Kausar",
+			"number_of_ayah": "3"
+		},
+		{
+			"number": "109",
+			"name": "الكٰفرون",
+			"name_latin": "Al-Kafirun",
+			"number_of_ayah": "6"
+		},
+		{
+			"number": "110",
+			"name": "النصر",
+			"name_latin": "An-Nasr",
+			"number_of_ayah": "3"
+		},
+		{
+			"number": "111",
+			"name": "اللهب",
+			"name_latin": "Al-Lahab",
+			"number_of_ayah": "5"
+		},
+		{
+			"number": "112",
+			"name": "الاخلاص",
+			"name_latin": "Al-Ikhlas",
+			"number_of_ayah": "4"
+		},
+		{
+			"number": "113",
+			"name": "الفلق",
+			"name_latin": "Al-Falaq",
+			"number_of_ayah": "5"
+		},
+		{
+			"number": "114",
+			"name": "الناس",
+			"name_latin": "An-Nas",
+			"number_of_ayah": "6"
 		}
 
 	]
