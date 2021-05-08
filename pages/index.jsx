@@ -42,7 +42,7 @@ const [surah,setSurah]= useState([])
      
      <main className={styles.main}>
        <div className=" container fixed-top " style={{backgroundColor:"#51c4d3"}}>
-         <h1 className="fs-2 fw-2 my-2 font-custom " style={{color:"white"}}>Qur`an Online</h1> 
+         <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{color:"white"}}>Qur`an App</h1> 
          <input className="form-control mb-3" type="text" placeholder="Cari nama surah" aria-label="default input example" onChange={(e)=>search(e.target.value)}></input>
        </div>
        <div className="container" style={{ marginTop: 111 }}>
@@ -50,10 +50,15 @@ const [surah,setSurah]= useState([])
         {surah.map((v,i)=>(
           
           <Fragment key={i}>
-          <div className="col-sm-6 mb-2" >
+          <div className={"col-sm-4 mb-2"} >
              <div className="card" >
                <div className="card-body" >
-                 <h4 dir="rtl" lang="ar"className="card-title" style={{fontFamily:'Amiri'}} >{v.name}</h4>
+                 <div style={{display:'flex',justifyContent:'space-between'}}>
+                 <p  className="card-title" style={{fontFamily:'Amiri'}} >{v.number+'. '}</p>
+                 <h4 dir="rtl" lang="ar"className="card-title" style={{fontFamily:'Amiri'}} >
+                 <Link href={`/surah/${v.number}`} >{v.name}</Link></h4>
+                 </div>
+                
                  <h6 className="card-subtitle mb-2 text-muted"><Link href={`/surah/${v.number}`} >{v.name_latin}</Link></h6>
                  <p className="card-text" >Jumlah Ayat:&nbsp;{v.number_of_ayah}</p> 
                </div>
