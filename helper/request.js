@@ -1,6 +1,6 @@
 import axios from "axios";
 import dotenv from 'dotenv'
-import fs from "fs/promises";
+import fs from "fs";
 import path from "path";
 
 dotenv.config()
@@ -16,7 +16,7 @@ export const GetSurah=async(id=0)=>{
     try {
         const surahDirectory = path.join(process.cwd(), 'data/surah');
         const filePath = path.join(surahDirectory, 'list.json');
-        let rawdata = await fs.readFile(filePath,'utf-8');
+        let rawdata = await fs.readFileSync(filePath,'utf-8');
         let allSurah = JSON.parse(rawdata);
         return {result:allSurah}
         
