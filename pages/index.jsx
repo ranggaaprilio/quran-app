@@ -32,7 +32,7 @@ const [surah,setSurah]= useState([])
   return (
     <Fragment>
        <Head>
-        <title>Create Next App</title>
+        <title>Quran App</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta content="text/html;charset=UTF-8"/>

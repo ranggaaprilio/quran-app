@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lateef&display=swap');
 html,
 body {
   padding: 0;
@@ -15,4 +16,21 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+hr.dashed {
+  border-top: 1px dashed #34656d;
+}
+
+.numcontainer {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

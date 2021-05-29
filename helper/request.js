@@ -29,8 +29,8 @@ export const GetSurah=async(id=0)=>{
 export const Getayat=async(id=0)=>{
     try {
         if (id!==0) {
-            const res=await request.get(`/api/surah/${id}`)
-            return res.data
+            const res=await fetch(`/api/surah/${id}`)
+            return res.json()
         }
         return false
     } catch (error) {
