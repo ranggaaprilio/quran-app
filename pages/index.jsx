@@ -51,7 +51,7 @@ const [surah,setSurah]= useState([])
           
           <Fragment key={i}>
           <div className={surah.length>2?"col-sm-4 mb-2":"col-sm-6 mb-2"} >
-             <div className="card" style={{backgroundColor:"#fffbdf"}} >
+             <div className="card" style={{backgroundColor:"#fffbdf",minWidth:"300px"}} >
                <div className="card-body" >
                  <div style={{display:'flex',justifyContent:'space-between'}}>
                  <p  className="card-title" style={{fontFamily:'Amiri'}} >{v.number+'. '}</p>

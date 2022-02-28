@@ -17,11 +17,11 @@
 }
 .main {
   /* padding: 0 0; */
-  flex: 1;
+  /* flex: 1; */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* flex-direction: column; */
+  /* justify-content: center; */
+  /* align-items: center; */
   background-color: white;
   /*width: 1vh; */
   overflow: unset;
@@ -39,6 +39,7 @@
 
 .whenhover:hover{
   background-color: #34656d;
+  cursor: pointer;
 }
 
 .footer {
