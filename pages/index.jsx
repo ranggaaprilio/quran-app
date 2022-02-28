@@ -78,7 +78,7 @@ const [surah,setSurah]= useState([])
 
      <footer className={styles.footer}>
        <a
-         href="https://portofnext.vercel.app"
+         href="https://portofolio.devapril.com"
          target="_blank"
          rel="noopener noreferrer"
        >
