@@ -98,7 +98,7 @@ return(
         <p dir="rtl" lang="ar"className=" fs-1 ms-2 pb-1 pr-5 arab" >{v}  &nbsp;
         <span className="numcontainer">
         
-        <img style={{display:"inline-block",height:"60px",width:"60px"}} src="/arabic-design-circular-border-ornamental-round-vector-13473464-removebg-preview.png" alt="border" srcset="" />
+        {/* <img style={{display:"inline-block",height:"60px",width:"60px"}} src="/arabic-design-circular-border-ornamental-round-vector-13473464-removebg-preview.png" alt="border" srcset="" /> */}
         <div className="circle">
           <p className="centered" style={{color:"#212529"}}>{ConvertToArabicNumbers(number[i])}</p>
         </div>
