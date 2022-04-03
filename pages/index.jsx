@@ -1,103 +1,103 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
-import {GetSurah} from '../helper/request' 
-import {Fragment, useEffect,useState} from 'react'
+import { GetTodaySchedule } from '../helper/request'
+import { Fragment, useEffect, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faKaaba, faQuran } from '@fortawesome/free-solid-svg-icons'
 import _ from "lodash";
+import { useRouter } from 'next/router'
 
 export default function Home(props) {
 
-const [surah,setSurah]= useState([])
+  const router = useRouter()
+
+  const [DefaultJadwal, setDefaultJadwal] = useState([])
+  const [DefLocation, setDefLocation] = useState()
+  const [active, setActive] = useState()
 
   useEffect(() => {
-    const{data}=props.list.allSurah.result
-    console.log(data,"listing");
-    setSurah(data)
+    setDefaultJadwal(props.list.getTodaySchedule.datetime)
+    setDefLocation(props.list.getTodaySchedule.location)
+    setActive(props.list.getTodaySchedule.active)
   }, [])
 
-  const search=(data='')=>{
-    console.log(data,'data');
-    const res=props.list.allSurah.result.data
-    if (data=='') {
-      setSurah(res)
-      return false
-    }
-    let find = _.filter(res,function(item){
-      return item.name_latin.toLowerCase().indexOf(data.toLowerCase()) >= 0
-    })
-    console.log(find);
-    setSurah(find)
-  }
-  
   return (
     <Fragment>
-       <Head>
+      <Head>
         <title>Quran App</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta content="text/html;charset=UTF-8"/>
+        <meta content="text/html;charset=UTF-8" />
       </Head>
       <div className={styles.box}></div>
       <div className={styles.container}>
-     
-     <main className={styles.main}>
-       <div className=" container fixed-top " style={{backgroundColor:"#34656d"}}>
-         <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{color:"white"}}>Qur`an App</h1> 
-         <input className="form-control mb-3" type="text" placeholder="Cari nama surah" aria-label="default input example" onChange={(e)=>search(e.target.value)}></input>
-       </div>
-       <div className="container" style={{ marginTop: 111 }}>
-       <div className="row">
-        {surah.map((v,i)=>(
-          
-          <Fragment key={i}>
-          <div className={surah.length>2?"col-sm-4 mb-2":"col-sm-6 mb-2"} >
-             <div className="card" style={{backgroundColor:"#fffbdf",minWidth:"300px"}} >
-               <div className="card-body" >
-                 <div style={{display:'flex',justifyContent:'space-between'}}>
-                 <p  className="card-title" style={{fontFamily:'Amiri'}} >{v.number+'. '}</p>
-                 <h4 dir="rtl" lang="ar"className="card-title" style={{fontFamily:'Amiri'}} >
-                 <Link href={`/surah/${v.number}`} className={styles.whenhover}>{v.name}</Link></h4>
-                 </div>
-                
-                 <h6 className="card-subtitle mb-2 text-muted"><Link href={`/surah/${v.number}`} className={styles.whenhover} >{v.name_latin}</Link></h6>
-                 <p className="card-text" >Jumlah Ayat:&nbsp;{v.number_of_ayah}</p> 
-               </div>
-             </div>
-           </div>
-          </Fragment>
-     
-            
-        )
-        )}
-         
-         
-         </div>
-       </div>
-    
-     </main>
 
-     <footer className={styles.footer}>
-       <a
-         href="https://portofolio.devapril.com"
-         target="_blank"
-         rel="noopener noreferrer"
-       >
-         Powered by <span className="fw-bold">&nbsp; Rangga Aprilio Utama</span> 
-       
-       </a>
-     </footer>
-   </div>
+        <main className={styles.main}>
+          <div className=" container fixed-top " style={{ backgroundColor: "#34656d" }}>
+            <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{ color: "white" }}>Muslim App</h1>
+            <div className="row">
+              <div className="col-sm-6">
+                <div className="card mb-2" >
+                  <div className="card-body">
+
+                    <div className="d-flex justify-content-between align-items-center" style={{minHeight:'120px'}}>
+                      <div>
+                        {/* <p className='text-lg-start fw-medium p-2 bg-success text-white rounded fs-6 mb-0'>Jadwal Sholat</p> */}
+                        <p className='text-lg-start fw-medium py-1 px-2 bg-warning text-white rounded fs-6 mb-0'>{DefLocation?.city}</p>
+                        <p className='text-lg-start fs-2 mb-0'>{active?.name}</p>
+                        <p className='text-lg-start fs-6 mb-0'> {active?.time}</p>
+                      </div>
+                      <div>
+                        <FontAwesomeIcon icon={faKaaba} size='s' height={100} width={100} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-sm-6 mb-2">
+                <div className="card"  onClick={() => router.push('/quran')} style={{cursor:'pointer'}}>
+                  <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-center" style={{minHeight:'120px'}}>
+                      <div>
+                        <p className='text-lg-start fs-2 mb-1'>Baca Qur'an</p>
+                      </div>
+                      <div>
+                        <FontAwesomeIcon icon={faQuran} size='s' height={100} width={100} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="container" style={{ marginTop: 111 }}>
+          </div>
+
+        </main>
+
+        <footer className={styles.footer}>
+          <a
+            href="https://portofolio.devapril.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Powered by <span className="fw-bold">&nbsp; Rangga Aprilio Utama</span>
+
+          </a>
+        </footer>
+      </div>
     </Fragment>
-   
+
   )
 }
 
 export async function getStaticProps() {
-  
-  const allSurah= await GetSurah();
+
+  const getTodaySchedule = await GetTodaySchedule();
   return {
     props: {
-      list: {allSurah},
+      list: { getTodaySchedule },
     },
   };
 }

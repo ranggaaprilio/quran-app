@@ -37,3 +37,12 @@ export const Getayat=async(id=0)=>{
         return error.message
     }
 }
+
+export const GetTodaySchedule=async()=>{
+    try {
+        const res=await request.get(`/api/jadwal/`)
+        return res.data.data.results
+    } catch (error) {
+        return error.message
+    }
+}
