@@ -65,7 +65,7 @@ export default async(req, res) => {
    if (req.method === 'GET') {
     try {
         console.log(process.env.API_SHOLAT,"process.env.API_SHOLAT")
-        const response=await fetch(`${process.env.API_SHOLAT}/v2/times/today.json?city=${process.env.DEFAULT_CITY}`);
+        const response=await fetch(`https://api.pray.zone/v2/times/today.json?city=jakarta`);
         const responseJson=await response.json();
         responseJson.results.active=findNowJadwal(responseJson);
         if (responseJson.code===200) {
