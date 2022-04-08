@@ -69,7 +69,7 @@ export default async(req, res) => {
         const response=await fetch(`https://api.pray.zone/v2/times/day.json?city=jakarta&date=${DateTime.local().setZone('UTC+7').toFormat('yyyy-MM-dd')}`);
         const responseJson=await response.json();
         responseJson.results.active=findNowJadwal(responseJson);
-        responseJson.results.dateNow=DateTime.local().setZone('UTC+7').toFormat('dd MMMM yyyy');
+        responseJson.results.dateNow=DateTime.local().setZone('UTC+7');
         if (responseJson.code===200) {
             res.status(200).json({data:responseJson}) 
         }else{
