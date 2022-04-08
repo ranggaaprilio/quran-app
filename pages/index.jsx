@@ -20,6 +20,7 @@ export default function Home(props) {
     setDefaultJadwal(props.list.getTodaySchedule.datetime)
     setDefLocation(props.list.getTodaySchedule.location)
     setActive(props.list.getTodaySchedule.active)
+    console.log(props.list.getTodaySchedule)
   }, [])
 
   return (
@@ -63,7 +64,7 @@ export default function Home(props) {
                         <p className='text-lg-start fs-2 mb-1'>Baca Qur'an</p>
                       </div>
                       <div>
-                        <FontAwesomeIcon icon={faQuran} size='s' height={100} width={100} />
+                        <FontAwesomeIcon icon={faQuran}  height={100} width={100} />
                       </div>
                     </div>
                   </div>

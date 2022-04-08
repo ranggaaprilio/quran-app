@@ -23,7 +23,8 @@ const findNowJadwal=(dateAndTime)=>{
     const maghrib=DateTime.fromObject(maghribObject);
     const isya=DateTime.fromObject(isyaObject);
 
-    console.log("compare",isya>now);
+    console.log("compare",now<imsak);
+    console.log(now.toFormat('yyyy-MM-dd HH:mm:ss'),"DATE NOW");
     if (now<imsak) {
         return {
             name:'Imsak',
@@ -64,10 +65,11 @@ const findNowJadwal=(dateAndTime)=>{
 export default async(req, res) => {
    if (req.method === 'GET') {
     try {
-        console.log(process.env.API_SHOLAT,"process.env.API_SHOLAT")
-        const response=await fetch(`https://api.pray.zone/v2/times/today.json?city=jakarta`);
+        console.log(`https://api.pray.zone/v2/times/day.json?city=jakarta&date=${DateTime.local().setZone('UTC+7').toFormat('yyyy-MM-dd')}`,"process.env.API_SHOLAT")
+        const response=await fetch(`https://api.pray.zone/v2/times/day.json?city=jakarta&date=${DateTime.local().setZone('UTC+7').toFormat('yyyy-MM-dd')}`);
         const responseJson=await response.json();
         responseJson.results.active=findNowJadwal(responseJson);
+        responseJson.results.dateNow=DateTime.local().setZone('UTC+7').toFormat('dd MMMM yyyy');
         if (responseJson.code===200) {
             res.status(200).json({data:responseJson}) 
         }else{
