@@ -41,7 +41,7 @@ export const Getayat=async(id=0)=>{
 export const GetTodaySchedule=async()=>{
     try {
         const res=await request.get(`/api/jadwal/`)
-        return res.data.data.results
+        return res?.data?.result
     } catch (error) {
         return error.message
     }

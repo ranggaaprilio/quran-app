@@ -20,20 +20,21 @@ export default function Home(props) {
 
 
   const parseToObject=(tanggal,waktu)=>{
-    let tanggalArray=tanggal.split('-');
+    const spiltArray = tanggal.split(' ')
+    let tanggalArray=spiltArray[1].split('/');
     let waktuArray=waktu.split(':');
-    return {year:tanggalArray[0],month:tanggalArray[1],day:tanggalArray[2],hour:waktuArray[0],minute:waktuArray[1]}
+    return {year:tanggalArray[2],month:tanggalArray[1],day:tanggalArray[0],hour:waktuArray[0],minute:waktuArray[1]}
 }
 
   const findNowJadwal=(dateAndTime)=>{
-    if(!isUndefined(dateAndTime.datetime[0])){
+    if(!isUndefined(dateAndTime?.status)){
       const now=DateTime.local().setZone('UTC+7');
-    const imsakObject=parseToObject(dateAndTime?.datetime[0]?.date.gregorian,dateAndTime.datetime[0].times.Imsak);
-    const subuhObject=parseToObject(dateAndTime?.datetime[0]?.date.gregorian,dateAndTime.datetime[0].times.Fajr);
-    const dzuhurObject=parseToObject(dateAndTime?.datetime[0]?.date.gregorian,dateAndTime.datetime[0].times.Dhuhr);
-    const asharObject=parseToObject(dateAndTime?.datetime[0]?.date.gregorian,dateAndTime.datetime[0].times.Asr);
-    const maghribObject=parseToObject(dateAndTime?.datetime[0]?.date.gregorian,dateAndTime.datetime[0].times.Maghrib);
-    const isyaObject=parseToObject(dateAndTime?.datetime[0]?.date.gregorian,dateAndTime.datetime[0].times.Isha);
+    const imsakObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.imsak);
+    const subuhObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.subuh);
+    const dzuhurObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.dzuhur);
+    const asharObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.ashar);
+    const maghribObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.maghrib);
+    const isyaObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.isya);
 
     const imsak=DateTime.fromObject(imsakObject);
     const subuh=DateTime.fromObject(subuhObject);
@@ -41,6 +42,7 @@ export default function Home(props) {
     const ashar=DateTime.fromObject(asharObject);
     const maghrib=DateTime.fromObject(maghribObject);
     const isya=DateTime.fromObject(isyaObject);
+    console.log(isya,"isya");
 
     console.log("compare",now<imsak);
     console.log(now.toFormat('yyyy-MM-dd HH:mm:ss'),"DATE NOW");
@@ -71,9 +73,11 @@ export default function Home(props) {
             }
         }else if(now<isya){
             return {
-                name:'Maghrib',
+                name:'Isya',
+                time:isya.toFormat('HH:mm')
             }
         }else{
+          console.log(isya,"isya");
             return {
                 name:'Isya',
                 time:isya.toFormat('HH:mm')
@@ -89,8 +93,8 @@ export default function Home(props) {
 }
 
   useEffect(() => {
-    setDefaultJadwal(props.list.getTodaySchedule.datetime)
-    setDefLocation(props.list.getTodaySchedule.location)
+    setDefaultJadwal(props.list.getTodaySchedule.data.jadwal)
+    setDefLocation(props.list.getTodaySchedule.data.daerah)
     console.log(props.list.getTodaySchedule)
     const active=findNowJadwal(props.list.getTodaySchedule)
     setActive(active)
@@ -118,7 +122,7 @@ export default function Home(props) {
                     <div className="d-flex justify-content-between align-items-center" style={{minHeight:'120px'}}>
                       <div>
                         {/* <p className='text-lg-start fw-medium p-2 bg-success text-white rounded fs-6 mb-0'>Jadwal Sholat</p> */}
-                        <p className='text-lg-start fw-medium py-1 px-2 bg-warning text-white rounded fs-6 mb-0'>{DefLocation?.city}</p>
+                        <p className='text-lg-start fw-medium py-1 px-2 bg-warning text-white rounded fs-6 mb-0'>{DefLocation}</p>
                         <p className='text-lg-start fs-2 mb-0'>{active?.name}</p>
                         <p className='text-lg-start fs-6 mb-0'> {active?.time}</p>
                       </div>
