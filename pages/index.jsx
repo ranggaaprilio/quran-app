@@ -93,11 +93,25 @@ export default function Home(props) {
 }
 
   useEffect(() => {
-    setDefaultJadwal(props.list.getTodaySchedule.data.jadwal)
-    setDefLocation(props.list.getTodaySchedule.data.daerah)
-    console.log(props.list.getTodaySchedule)
-    const active=findNowJadwal(props.list.getTodaySchedule)
-    setActive(active)
+    async function getdata (){
+      try {
+        const data=await fetch(`https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`);
+        const responseJson=await data.json();
+        if (responseJson.status===true) {
+          console.log(responseJson,"code");
+          setDefaultJadwal(responseJson.data.jadwal)
+          setDefLocation(responseJson.data.daerah)
+          const active=findNowJadwal(responseJson)
+          setActive(active)
+      }else{
+          throw new Error(responseJson.message)
+      }
+      } catch (error) {
+        console.log(error);
+      }
+       
+    }
+    getdata()
   }, [])
 
   return (
@@ -168,14 +182,4 @@ export default function Home(props) {
     </Fragment>
 
   )
-}
-
-export async function getStaticProps() {
-
-  const getTodaySchedule = await GetTodaySchedule();
-  return {
-    props: {
-      list: { getTodaySchedule },
-    },
-  };
 }
