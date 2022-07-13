@@ -76,7 +76,7 @@ return(
       <div class="container-fluid py-2">
         <div style={{display:"flex",justifyContent:"right",alignItems:"center"}}>
           <FontAwesomeIcon icon={faArrowLeftLong} size="xs" height={14} width={14} />
-          <Link href={`/`} className={styles.whenhover}><span style={{padding:"16px",marginBottom:0,cursor:"pointer"}}>kembali</span></Link>
+          <Link href={`/quran`} className={styles.whenhover}><span style={{padding:"16px",marginBottom:0,cursor:"pointer"}}>kembali</span></Link>
           
         </div>
         <div>
