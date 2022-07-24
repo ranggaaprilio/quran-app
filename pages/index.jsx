@@ -7,8 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faKaaba, faQuran } from '@fortawesome/free-solid-svg-icons'
 import _ from "lodash";
 import { isUndefined } from 'lodash'
+import React from 'react'
 import { useRouter } from 'next/router'
 import { DateTime } from 'luxon'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Home(props) {
 
@@ -17,6 +20,7 @@ export default function Home(props) {
   const [DefaultJadwal, setDefaultJadwal] = useState([])
   const [DefLocation, setDefLocation] = useState()
   const [active, setActive] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
 
   const parseToObject=(tanggal,waktu)=>{
@@ -95,7 +99,7 @@ export default function Home(props) {
   useEffect(() => {
     async function getdata (){
       try {
-
+        setIsLoading(true)
         const ipTrack=await fetch('https://json.geoiplookup.io/');
         const jsonData=await ipTrack.json();
         const getIdLocation =await fetch(`https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`);
@@ -109,16 +113,20 @@ export default function Home(props) {
         const responseJson=await data.json();
         console.log(responseJson,"responsLocation3");
         if (responseJson.status===true) {
+          
           console.log(responseJson,"code");
           setDefaultJadwal(responseJson.data.jadwal)
           setDefLocation(responseJson.data.daerah)
           const active=findNowJadwal(responseJson)
           setActive(active)
+          setIsLoading(false)
       }else{
           throw new Error(responseJson.message)
+          setIsLoading(false)
       }
       } catch (error) {
         console.log(error);
+        setIsLoading(false)
       }
        
     }
@@ -147,9 +155,21 @@ export default function Home(props) {
                     <div className="d-flex justify-content-between align-items-center" style={{minHeight:'120px'}}>
                       <div>
                         {/* <p className='text-lg-start fw-medium p-2 bg-success text-white rounded fs-6 mb-0'>Jadwal Sholat</p> */}
-                        <p className='text-lg-start fw-medium py-1 px-2 bg-warning text-white rounded fs-6 mb-0'>{DefLocation}</p>
+                        {isLoading ? (
+                          <React.Fragment>
+                            <Skeleton height={20} width={100} />
+                            <Skeleton height={20} width={200} />
+                            <Skeleton height={20} width={200} />
+                          </React.Fragment>
+                        
+                        ):(
+                          <React.Fragment>
+                          <p className='text-lg-start fw-medium py-1 px-2 bg-warning text-white rounded fs-6 mb-0'>{DefLocation}</p>
                         <p className='text-lg-start fs-2 mb-0'>{active?.name}</p>
                         <p className='text-lg-start fs-6 mb-0'> {active?.time}</p>
+                        </React.Fragment>
+                        )}
+                        
                       </div>
                       <div>
                         <FontAwesomeIcon icon={faKaaba} size='s' height={100} width={100} />
