@@ -95,8 +95,19 @@ export default function Home(props) {
   useEffect(() => {
     async function getdata (){
       try {
-        const data=await fetch(`https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`);
+
+        const ipTrack=await fetch('https://json.geoiplookup.io/');
+        const jsonData=await ipTrack.json();
+        const getIdLocation =await fetch(`https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`);
+        const responsLocation=await getIdLocation.json();
+        let url=`https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
+        if (responsLocation.status===true){
+          url=`https://api.myquran.com/v1/sholat/jadwal/${responsLocation.data[0].id}/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
+        }
+        console.log(url,"responsLocation2");
+        const data=await fetch(url);
         const responseJson=await data.json();
+        console.log(responseJson,"responsLocation3");
         if (responseJson.status===true) {
           console.log(responseJson,"code");
           setDefaultJadwal(responseJson.data.jadwal)
