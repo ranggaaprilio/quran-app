@@ -7,6 +7,8 @@ import { DateTime } from 'luxon'
 import { isUndefined } from 'lodash'
 import _ from "lodash";
 import moment from 'moment-hijri'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function quran(props) {
 
@@ -14,7 +16,7 @@ const [surah,setSurah]= useState([])
 const [DefaultJadwal, setDefaultJadwal] = useState([])
   const [DefLocation, setDefLocation] = useState()
   const [active, setActive] = useState()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [dateNow,setDateNow] = useState(moment().format('iYYYY/iM/iD'))
 
   useEffect(() => {
@@ -163,7 +165,8 @@ const parseToObject=(tanggal,waktu)=>{
        <div className=" container fixed-top " style={{backgroundColor:"#34656d"}}>
         <div className="d-flex justify-content-between align-items-center">
           <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{color:"white"}}>Qur`an App</h1> 
-          <p className="mb-0" style={{color:'white'}}>{`${DefLocation}, ${active?.name} ${active?.time}`}</p>
+          {isLoading?<Skeleton width="300px"/>: <p className="mb-0" style={{color:'white'}}>{`${DefLocation}, ${active?.name} ${active?.time}`}</p>}
+         
         </div>
          <input className="form-control mb-3" type="text" placeholder="Cari nama surah" aria-label="default input example" onChange={(e)=>search(e.target.value)}></input>
        </div>
