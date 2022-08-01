@@ -1,34 +1,65 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
-import { GetTodaySchedule } from '../helper/request'
-import { Fragment, useEffect, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKaaba, faQuran } from '@fortawesome/free-solid-svg-icons'
-import _ from "lodash";
-import { isUndefined } from 'lodash'
-import React from 'react'
-import { useRouter } from 'next/router'
+import {GetSurah} from '../helper/request' 
+import {Fragment, useEffect,useState} from 'react'
 import { DateTime } from 'luxon'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import { isUndefined } from 'lodash'
+import _ from "lodash";
+import moment from 'moment-hijri'
 
-export default function Home(props) {
+export default function quran(props) {
 
-  const router = useRouter()
-
-  const [DefaultJadwal, setDefaultJadwal] = useState([])
+const [surah,setSurah]= useState([])
+const [DefaultJadwal, setDefaultJadwal] = useState([])
   const [DefLocation, setDefLocation] = useState()
   const [active, setActive] = useState()
   const [isLoading, setIsLoading] = useState(false)
+  const [dateNow,setDateNow] = useState(moment().format('iYYYY/iM/iD'))
 
+  useEffect(() => {
+    const{data}=props.list.allSurah.result
+    console.log(data,"listing");
+    setSurah(data)
+  }, [])
 
-  const parseToObject=(tanggal,waktu)=>{
-    const spiltArray = tanggal.split(' ')
-    let tanggalArray=spiltArray[1].split('/');
-    let waktuArray=waktu.split(':');
-    return {year:tanggalArray[2],month:tanggalArray[1],day:tanggalArray[0],hour:waktuArray[0],minute:waktuArray[1]}
-}
+  useEffect(() => {
+    async function getdata (){
+      try {
+        setIsLoading(true)
+        const ipTrack=await fetch('https://json.geoiplookup.io/');
+        const jsonData=await ipTrack.json();
+        const getIdLocation =await fetch(`https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`);
+        const responsLocation=await getIdLocation.json();
+        let url=`https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
+        if (responsLocation.status===true){
+          url=`https://api.myquran.com/v1/sholat/jadwal/${responsLocation.data[0].id}/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
+        }
+        console.log(url,"responsLocation2");
+        const data=await fetch(url);
+        const responseJson=await data.json();
+        console.log(responseJson,"responsLocation3");
+        if (responseJson.status===true) {
+          
+          console.log(responseJson,"code");
+          setDefaultJadwal(responseJson.data.jadwal)
+          setDefLocation(responseJson.data.daerah)
+          const active=findNowJadwal(responseJson)
+          setActive(active)
+          setIsLoading(false)
+      }else{
+          throw new Error(responseJson.message)
+          setIsLoading(false)
+      }
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false)
+      }
+       
+    }
+    getdata()
+  }, [])
+
 
   const findNowJadwal=(dateAndTime)=>{
     if(!isUndefined(dateAndTime?.status)){
@@ -96,121 +127,99 @@ export default function Home(props) {
     
 }
 
-  useEffect(() => {
-    async function getdata (){
-      try {
-        setIsLoading(true)
-        const ipTrack=await fetch('https://json.geoiplookup.io/');
-        const jsonData=await ipTrack.json();
-        const getIdLocation =await fetch(`https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`);
-        const responsLocation=await getIdLocation.json();
-        let url=`https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
-        if (responsLocation.status===true){
-          url=`https://api.myquran.com/v1/sholat/jadwal/${responsLocation.data[0].id}/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
-        }
-        console.log(url,"responsLocation2");
-        const data=await fetch(url);
-        const responseJson=await data.json();
-        console.log(responseJson,"responsLocation3");
-        if (responseJson.status===true) {
-          
-          console.log(responseJson,"code");
-          setDefaultJadwal(responseJson.data.jadwal)
-          setDefLocation(responseJson.data.daerah)
-          const active=findNowJadwal(responseJson)
-          setActive(active)
-          setIsLoading(false)
-      }else{
-          throw new Error(responseJson.message)
-          setIsLoading(false)
-      }
-      } catch (error) {
-        console.log(error);
-        setIsLoading(false)
-      }
-       
-    }
-    getdata()
-  }, [])
+const parseToObject=(tanggal,waktu)=>{
+  const spiltArray = tanggal.split(' ')
+  let tanggalArray=spiltArray[1].split('/');
+  let waktuArray=waktu.split(':');
+  return {year:tanggalArray[2],month:tanggalArray[1],day:tanggalArray[0],hour:waktuArray[0],minute:waktuArray[1]}
+}
 
+  const search=(data='')=>{
+    console.log(data,'data');
+    const res=props.list.allSurah.result.data
+    if (data=='') {
+      setSurah(res)
+      return false
+    }
+    let find = _.filter(res,function(item){
+      return item.name_latin.toLowerCase().indexOf(data.toLowerCase()) >= 0
+    })
+    console.log(find);
+    setSurah(find)
+  }
+  
   return (
     <Fragment>
-      <Head>
+       <Head>
         <title>Quran App</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta content="text/html;charset=UTF-8" />
+        <meta content="text/html;charset=UTF-8"/>
       </Head>
       <div className={styles.box}></div>
       <div className={styles.container}>
+     
+     <main className={styles.main}>
+       <div className=" container fixed-top " style={{backgroundColor:"#34656d"}}>
+        <div className="d-flex justify-content-between align-items-center">
+          <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{color:"white"}}>Qur`an App</h1> 
+          <p className="mb-0" style={{color:'white'}}>{`${DefLocation}, ${active?.name} ${active?.time}`}</p>
+        </div>
+         <input className="form-control mb-3" type="text" placeholder="Cari nama surah" aria-label="default input example" onChange={(e)=>search(e.target.value)}></input>
+       </div>
+       <div className="container" style={{ marginTop: 111 }}>
+       <div className="row">
+        {surah.map((v,i)=>(
+          
+          <Fragment key={i}>
+          <div className={surah.length>2?"col-sm-4 mb-2":"col-sm-6 mb-2"} >
+             <div className="card" style={{backgroundColor:"#fffbdf",minWidth:"300px"}} >
+               <div className="card-body" >
+                 <div style={{display:'flex',justifyContent:'space-between'}}>
+                 <p  className="card-title" style={{fontFamily:'Amiri'}} >{v.number+'. '}</p>
+                 <h4 dir="rtl" lang="ar"className="card-title" style={{fontFamily:'Amiri'}} >
+                 <Link href={`/surah/${v.number}`} className={styles.whenhover}>{v.name}</Link></h4>
+                 </div>
+                
+                 <h6 className="card-subtitle mb-2 text-muted"><Link href={`/surah/${v.number}`} className={styles.whenhover} >{v.name_latin}</Link></h6>
+                 <p className="card-text" >Jumlah Ayat:&nbsp;{v.number_of_ayah}</p> 
+               </div>
+             </div>
+           </div>
+          </Fragment>
+     
+            
+        )
+        )}
+         
+         
+         </div>
+       </div>
+    
+     </main>
 
-        <main className={styles.main}>
-          <div className=" container fixed-top " style={{ backgroundColor: "#34656d" }}>
-            <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{ color: "white" }}>Muslim App</h1>
-            <div className="row">
-              <div className="col-sm-6">
-                <div className="card mb-2" >
-                  <div className="card-body">
-
-                    <div className="d-flex justify-content-between align-items-center" style={{minHeight:'120px'}}>
-                      <div>
-                        {/* <p className='text-lg-start fw-medium p-2 bg-success text-white rounded fs-6 mb-0'>Jadwal Sholat</p> */}
-                        {isLoading ? (
-                          <React.Fragment>
-                            <Skeleton height={20} width={100} />
-                            <Skeleton height={20} width={200} />
-                            <Skeleton height={20} width={200} />
-                          </React.Fragment>
-                        
-                        ):(
-                          <React.Fragment>
-                          <p className='text-lg-start fw-medium py-1 px-2 bg-warning text-white rounded fs-6 mb-0'>{DefLocation}</p>
-                        <p className='text-lg-start fs-2 mb-0'>{active?.name}</p>
-                        <p className='text-lg-start fs-6 mb-0'> {active?.time}</p>
-                        </React.Fragment>
-                        )}
-                        
-                      </div>
-                      <div>
-                        <FontAwesomeIcon icon={faKaaba} size='s' height={100} width={100} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-6 mb-2">
-                <div className="card"  onClick={() => router.push('/quran')} style={{cursor:'pointer'}}>
-                  <div className="card-body">
-                    <div className="d-flex justify-content-between align-items-center" style={{minHeight:'120px'}}>
-                      <div>
-                        <p className='text-lg-start fs-2 mb-1'>Baca Qur'an</p>
-                      </div>
-                      <div>
-                        <FontAwesomeIcon icon={faQuran}  height={100} width={100} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="container" style={{ marginTop: 111 }}>
-          </div>
-
-        </main>
-
-        <footer className={styles.footer}>
-          <a
-            href="https://portofolio.devapril.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Powered by <span className="fw-bold">&nbsp; Rangga Aprilio Utama</span>
-
-          </a>
-        </footer>
-      </div>
+     <footer className={styles.footer}>
+       <a
+         href="https://portofolio.devapril.com"
+         target="_blank"
+         rel="noopener noreferrer"
+       >
+         Powered by <span className="fw-bold">&nbsp; Rangga Aprilio Utama</span> 
+       
+       </a>
+     </footer>
+   </div>
     </Fragment>
-
+   
   )
+}
+
+export async function getStaticProps() {
+  
+  const allSurah= await GetSurah();
+  return {
+    props: {
+      list: {allSurah},
+    },
+  };
 }

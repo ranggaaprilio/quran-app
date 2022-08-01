@@ -3,17 +3,136 @@ import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import {GetSurah} from '../helper/request' 
 import {Fragment, useEffect,useState} from 'react'
+import { DateTime } from 'luxon'
+import { isUndefined } from 'lodash'
 import _ from "lodash";
+import moment from 'moment-hijri'
 
 export default function quran(props) {
 
 const [surah,setSurah]= useState([])
+const [DefaultJadwal, setDefaultJadwal] = useState([])
+  const [DefLocation, setDefLocation] = useState()
+  const [active, setActive] = useState()
+  const [isLoading, setIsLoading] = useState(false)
+  const [dateNow,setDateNow] = useState(moment().format('iYYYY/iM/iD'))
 
   useEffect(() => {
     const{data}=props.list.allSurah.result
     console.log(data,"listing");
     setSurah(data)
   }, [])
+
+  useEffect(() => {
+    async function getdata (){
+      try {
+        setIsLoading(true)
+        const ipTrack=await fetch('https://json.geoiplookup.io/');
+        const jsonData=await ipTrack.json();
+        const getIdLocation =await fetch(`https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`);
+        const responsLocation=await getIdLocation.json();
+        let url=`https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
+        if (responsLocation.status===true){
+          url=`https://api.myquran.com/v1/sholat/jadwal/${responsLocation.data[0].id}/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
+        }
+        console.log(url,"responsLocation2");
+        const data=await fetch(url);
+        const responseJson=await data.json();
+        console.log(responseJson,"responsLocation3");
+        if (responseJson.status===true) {
+          
+          console.log(responseJson,"code");
+          setDefaultJadwal(responseJson.data.jadwal)
+          setDefLocation(responseJson.data.daerah)
+          const active=findNowJadwal(responseJson)
+          setActive(active)
+          setIsLoading(false)
+      }else{
+          throw new Error(responseJson.message)
+          setIsLoading(false)
+      }
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false)
+      }
+       
+    }
+    getdata()
+  }, [])
+
+
+  const findNowJadwal=(dateAndTime)=>{
+    if(!isUndefined(dateAndTime?.status)){
+      const now=DateTime.local().setZone('UTC+7');
+    const imsakObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.imsak);
+    const subuhObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.subuh);
+    const dzuhurObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.dzuhur);
+    const asharObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.ashar);
+    const maghribObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.maghrib);
+    const isyaObject=parseToObject(dateAndTime?.data.jadwal.tanggal,dateAndTime?.data.jadwal.isya);
+
+    const imsak=DateTime.fromObject(imsakObject);
+    const subuh=DateTime.fromObject(subuhObject);
+    const dzuhur=DateTime.fromObject(dzuhurObject);
+    const ashar=DateTime.fromObject(asharObject);
+    const maghrib=DateTime.fromObject(maghribObject);
+    const isya=DateTime.fromObject(isyaObject);
+    console.log(isya,"isya");
+
+    console.log("compare",now<imsak);
+    console.log(now.toFormat('yyyy-MM-dd HH:mm:ss'),"DATE NOW");
+        if (now<imsak) {
+            return {
+                name:'Imsak',
+                time:imsak.toFormat('HH:mm')
+            }
+        } else if (now<subuh) {
+            return {
+                name:'Subuh',
+                time:subuh.toFormat('HH:mm')
+            }
+        }else if (now<dzuhur) {
+            return {
+                name:'Dzuhur',
+                time:dzuhur.toFormat('HH:mm')
+            }
+        }else if(now<ashar){
+            return {
+                name:'Ashar',
+                time:ashar.toFormat('HH:mm')
+            }
+        }else if(now<maghrib){
+            return {
+                name:'Maghrib',
+                time:maghrib.toFormat('HH:mm')
+            }
+        }else if(now<isya){
+            return {
+                name:'Isya',
+                time:isya.toFormat('HH:mm')
+            }
+        }else{
+          console.log(isya,"isya");
+            return {
+                name:'Isya',
+                time:isya.toFormat('HH:mm')
+            }
+        }
+    }
+
+    return {
+      name:"Not Found",
+      time:""
+    }
+    
+}
+
+const parseToObject=(tanggal,waktu)=>{
+  const spiltArray = tanggal.split(' ')
+  let tanggalArray=spiltArray[1].split('/');
+  let waktuArray=waktu.split(':');
+  return {year:tanggalArray[2],month:tanggalArray[1],day:tanggalArray[0],hour:waktuArray[0],minute:waktuArray[1]}
+}
 
   const search=(data='')=>{
     console.log(data,'data');
@@ -42,7 +161,10 @@ const [surah,setSurah]= useState([])
      
      <main className={styles.main}>
        <div className=" container fixed-top " style={{backgroundColor:"#34656d"}}>
-         <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{color:"white"}}>Qur`an App</h1> 
+        <div className="d-flex justify-content-between align-items-center">
+          <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{color:"white"}}>Qur`an App</h1> 
+          <p className="mb-0" style={{color:'white'}}>{`${DefLocation}, ${active?.name} ${active?.time}`}</p>
+        </div>
          <input className="form-control mb-3" type="text" placeholder="Cari nama surah" aria-label="default input example" onChange={(e)=>search(e.target.value)}></input>
        </div>
        <div className="container" style={{ marginTop: 111 }}>

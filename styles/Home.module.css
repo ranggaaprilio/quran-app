@@ -1,5 +1,5 @@
 
-.container {
+.containerz {
   min-height: 100vh;
   padding: 0 0.5rem;
   display: flex;
@@ -40,6 +40,12 @@
 .whenhover:hover{
   background-color: #34656d;
   cursor: pointer;
+}
+
+.datehijri{
+  position: fixed;
+  bottom: 14vh;
+  left: 2vh;
 }
 
 .footer {
