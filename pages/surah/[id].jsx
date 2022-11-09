@@ -93,7 +93,7 @@ export default function surah(props) {
     const lastSurah=[surah,ayat];
     const getLastSurah=localStorage.getItem('lastSurah');
 
-   if(getLastSuah){
+   if(getLastSurah){
     console.log(lastSurah[0],getLastSurah[0],'lastSurah0');
     console.log(getLastSurah[0]==lastSurah[0] ,'compare');
 
