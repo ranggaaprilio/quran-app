@@ -75,8 +75,9 @@ export default function surah(props) {
     const lastSurah=[surah,ayat];
     const getLastSurah=localStorage.getItem('lastSurah');
 
+    const lastSurahArray=getLastSurah.split(',');
     if (getLastSurah) {
-    if(getLastSurah[0]==lastSurah[0] && getLastSurah[2]==lastSurah[1]){
+    if(lastSurahArray[0]==lastSurah[0] && lastSurahArray[1]==lastSurah[1]){
       localStorage.setItem('lastSurah',[])
       setBookmark([])
       alert(`QS. ${Ayat?.name_latin} Ayat ${ayat} telah di hapus dari daftar bacaan terakhir`)
@@ -96,7 +97,7 @@ export default function surah(props) {
   const isSameBookmark=(surah,ayat)=>{
     const lastSurah=[surah,ayat];
     const getLastSurah=localStorage.getItem('lastSurah');
-
+    const lastSurahArray=getLastSurah.split(',');
    if(getLastSurah){
     console.log(lastSurah[0],getLastSurah[0],'lastSurah0');
     console.log(getLastSurah[0]==lastSurah[0] ,'compare');
@@ -104,7 +105,7 @@ export default function surah(props) {
     console.log(lastSurah[1],getLastSurah[2],'lastSurah1');
     console.log(getLastSurah[2]==lastSurah[1] ,'compare',lastSurah[1],getLastSurah[2]);
     
-    if(getLastSurah[0]==lastSurah[0] && getLastSurah[2]==lastSurah[1]){
+    if(getLastSurah[0]==lastSurah[0] && lastSurahArray[1]==lastSurah[1]){
       return true
     }else{
       return false
