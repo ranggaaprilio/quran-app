@@ -167,7 +167,7 @@ const parseToObject=(tanggal,waktu)=>{
      <main className={styles.main}>
        <div className=" container fixed-top " style={{backgroundColor:"#34656d"}}>
         <div className="d-flex justify-content-between align-items-center">
-          <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{color:"white"}}>Qur`an App</h1> 
+          <h1 className="fs-2 fw-2 my-2 font-custom mb-3 " style={{color:"white"}}>Al Qur`an</h1> 
           {isLoading?<Skeleton width="300px"/>: <p className="mb-0" style={{color:'white'}}>{`${DefLocation}, ${active?.name} ${active?.time}`}</p>}
          
         </div>
