@@ -75,6 +75,7 @@ export default function surah(props) {
     const lastSurah=[surah,ayat];
     const getLastSurah=localStorage.getItem('lastSurah');
 
+    if (getLastSurah==null) {
     if(getLastSurah[0]==lastSurah[0] && getLastSurah[2]==lastSurah[1]){
       localStorage.setItem('lastSurah',[])
       setBookmark([])
@@ -84,6 +85,7 @@ export default function surah(props) {
       setBookmark(lastSurah)
       alert(`QS. ${Ayat?.name_latin} Ayat ${ayat} telah ditandai`)
     }
+  }
     
   }
 
@@ -91,6 +93,7 @@ export default function surah(props) {
     const lastSurah=[surah,ayat];
     const getLastSurah=localStorage.getItem('lastSurah');
 
+   if(getLastSuah){
     console.log(lastSurah[0],getLastSurah[0],'lastSurah0');
     console.log(getLastSurah[0]==lastSurah[0] ,'compare');
 
@@ -102,6 +105,7 @@ export default function surah(props) {
     }else{
       return false
     }
+   }
   }
 
 return(
