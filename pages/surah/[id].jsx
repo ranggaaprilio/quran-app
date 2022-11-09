@@ -41,20 +41,25 @@ export default function surah(props) {
   const [number, setNumber]=useState([])
   const [loading,setLoading]=useState(true)
 
-  useEffect(async() => {
+  useEffect(() => {
     setLoading(true)
-    const surah= await Getayat(router.query.id);
+    const fetchAyat = async () => {
+      const surah= await Getayat(router.query.id);
+      if (surah!=false) {
+        let result=surah?.result?.data
+        // console.log();
+        
+        setAyat(result)
+        setIsi(Object.values(result?.text))
+        setArti(Object.values(result?.translations?.id.text))
+        setNumber(Object.keys(result?.text))
+        setLoading(false)
+      }
+    }
+
+    fetchAyat()
     // console.log(surah,'ini surah');
-  if (surah!=false) {
-    let result=surah?.result?.data
-    // console.log();
-    
-    setAyat(result)
-    setIsi(Object.values(result?.text))
-    setArti(Object.values(result?.translations?.id.text))
-    setNumber(Object.keys(result?.text))
-    setLoading(false)
-  }
+   
   }, [router])
 
   const ConvertToArabicNumbers = (num) => {
@@ -76,7 +81,7 @@ return(
       <div class="container-fluid py-2">
         <div style={{display:"flex",justifyContent:"right",alignItems:"center"}}>
           <FontAwesomeIcon icon={faArrowLeftLong} size="xs" height={14} width={14} />
-          <Link href={`/quran`} className={styles.whenhover}><span style={{padding:"16px",marginBottom:0,cursor:"pointer"}}>kembali</span></Link>
+          <Link href={`/`} className={styles.whenhover}><span style={{padding:"16px",marginBottom:0,cursor:"pointer"}}>kembali</span></Link>
           
         </div>
         <div>

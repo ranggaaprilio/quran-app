@@ -33,9 +33,10 @@ const [DefaultJadwal, setDefaultJadwal] = useState([])
         const jsonData=await ipTrack.json();
         const getIdLocation =await fetch(`https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`);
         const responsLocation=await getIdLocation.json();
-        let url=`https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
+        console.log(responsLocation,"responsLocation");
+        let url=`https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().setZone('UTC+7').toFormat('dd')}`
         if (responsLocation.status===true){
-          url=`https://api.myquran.com/v1/sholat/jadwal/${responsLocation.data[0].id}/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().toFormat('dd')}`
+          url=`https://api.myquran.com/v1/sholat/jadwal/${responsLocation.data[0].id}/${DateTime.local().toFormat('yyyy')}/${DateTime.local().toFormat('MM')}/${DateTime.local().setZone('UTC+7').toFormat('dd')}`
         }
         console.log(url,"responsLocation2");
         const data=await fetch(url);
@@ -81,7 +82,9 @@ const [DefaultJadwal, setDefaultJadwal] = useState([])
     const isya=DateTime.fromObject(isyaObject);
     console.log(isya,"isya");
 
-    console.log("compare",now<imsak);
+    console.log("now",now);
+    console.log("imsak",imsak);
+    console.log("imsakObject",imsakObject);
     console.log(now.toFormat('yyyy-MM-dd HH:mm:ss'),"DATE NOW");
         if (now<imsak) {
             return {
