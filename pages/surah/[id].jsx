@@ -74,9 +74,8 @@ export default function surah(props) {
     //set to localstorage
     const lastSurah=[surah,ayat];
     const getLastSurah=localStorage.getItem('lastSurah');
-
-    const lastSurahArray=getLastSurah.split(',');
     if (getLastSurah) {
+    const lastSurahArray=getLastSurah.split(',');
     if(lastSurahArray[0]==lastSurah[0] && lastSurahArray[1]==lastSurah[1]){
       localStorage.setItem('lastSurah',[])
       setBookmark([])
@@ -97,8 +96,9 @@ export default function surah(props) {
   const isSameBookmark=(surah,ayat)=>{
     const lastSurah=[surah,ayat];
     const getLastSurah=localStorage.getItem('lastSurah');
-    const lastSurahArray=getLastSurah.split(',');
+   
    if(getLastSurah){
+    const lastSurahArray=getLastSurah.split(',');
     console.log(lastSurah[0],getLastSurah[0],'lastSurah0');
     console.log(getLastSurah[0]==lastSurah[0] ,'compare');
 
