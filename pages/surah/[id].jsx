@@ -131,7 +131,7 @@ return(
         </div>
         <div>
           {loading?<MyLoader/>:(<><div>
-            <h1 className="display-5 fw-medium text-green-900 ">{Ayat?.name_latin}({Ayat?.name})</h1>
+            <h1 className="display-5 fw-medium text-green-900 arab ">{Ayat?.name_latin}({Ayat?.name})</h1>
             <h5 className="fs-3 fw-medium text-green-900 ">Makna: {Ayat?.translations?.id.name}</h5>
           </div><div>
               <h6 className="fs-5 fw-light text-green-900 ">Surah ke- {Ayat?.number}</h6>

@@ -182,8 +182,8 @@ const parseToObject=(tanggal,waktu)=>{
              <div className="card" style={{backgroundColor:"#fffbdf",minWidth:"300px"}} >
                <div className="card-body" >
                  <div style={{display:'flex',justifyContent:'space-between'}}>
-                 <p  className="card-title" style={{fontFamily:'Amiri'}} >{v.number+'. '}</p>
-                 <h4 dir="rtl" lang="ar"className="card-title" style={{fontFamily:'Amiri'}} >
+                 <p  className="card-title" style={{fontFamily:'fontArab'}} >{v.number+'. '}</p>
+                 <h4 dir="rtl" lang="ar"className="card-title" style={{fontFamily:'fontArab'}} >
                  <Link href={`/surah/${v.number}`} className={styles.whenhover}>{v.name}</Link></h4>
                  </div>
                 
