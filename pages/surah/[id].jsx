@@ -5,6 +5,7 @@ import {Getayat} from '../../helper/request'
 import ContentLoader from "react-content-loader"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
+import { faBookBookmark } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import styles from '../../styles/Home.module.css'
 
@@ -40,6 +41,7 @@ export default function surah(props) {
   const [arti,setArti]=useState([])
   const [number, setNumber]=useState([])
   const [loading,setLoading]=useState(true)
+  const [bookmark,setBookmark]=useState([])
 
   useEffect(() => {
     setLoading(true)
@@ -54,6 +56,7 @@ export default function surah(props) {
         setArti(Object.values(result?.translations?.id.text))
         setNumber(Object.keys(result?.text))
         setLoading(false)
+        setBookmark(localStorage.getItem('lastSurah') || [])
       }
     }
 
@@ -66,6 +69,40 @@ export default function surah(props) {
     const arabicNumbers = '\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669';
    return new String(num).replace(/[0123456789]/g, (d)=>{return arabicNumbers[d]});
   }
+  
+  const setLastAyat=(surah,ayat)=>{
+    //set to localstorage
+    const lastSurah=[surah,ayat];
+    const getLastSurah=localStorage.getItem('lastSurah');
+
+    if(getLastSurah[0]==lastSurah[0] && getLastSurah[2]==lastSurah[1]){
+      localStorage.setItem('lastSurah',[])
+      setBookmark([])
+      alert(`QS. ${Ayat?.name_latin} Ayat ${ayat} telah di hapus dari daftar bacaan terakhir`)
+    }else{
+      localStorage.setItem('lastSurah',lastSurah)
+      setBookmark(lastSurah)
+      alert(`QS. ${Ayat?.name_latin} Ayat ${ayat} telah ditandai`)
+    }
+    
+  }
+
+  const isSameBookmark=(surah,ayat)=>{
+    const lastSurah=[surah,ayat];
+    const getLastSurah=localStorage.getItem('lastSurah');
+
+    console.log(lastSurah[0],getLastSurah[0],'lastSurah0');
+    console.log(getLastSurah[0]==lastSurah[0] ,'compare');
+
+    console.log(lastSurah[1],getLastSurah[2],'lastSurah1');
+    console.log(getLastSurah[2]==lastSurah[1] ,'compare',lastSurah[1],getLastSurah[2]);
+    
+    if(getLastSurah[0]==lastSurah[0] && getLastSurah[2]==lastSurah[1]){
+      return true
+    }else{
+      return false
+    }
+  }
 
 return(
 <Fragment>
@@ -77,8 +114,8 @@ return(
         <meta content="text/html;charset=UTF-8"/>
 
       </Head>
-    <div class="p-4 mb-4 " style={{backgroundColor:"#c6ffc1"}}>
-      <div class="container-fluid py-2">
+    <div className="p-4 mb-4 " style={{backgroundColor:"#c6ffc1"}}>
+      <div className="container-fluid py-2">
         <div style={{display:"flex",justifyContent:"right",alignItems:"center"}}>
           <FontAwesomeIcon icon={faArrowLeftLong} size="xs" height={14} width={14} />
           <Link href={`/`} className={styles.whenhover}><span style={{padding:"16px",marginBottom:0,cursor:"pointer"}}>kembali</span></Link>
@@ -86,11 +123,15 @@ return(
         </div>
         <div>
           {loading?<MyLoader/>:(<><div>
-            <h1 class="display-5 fw-medium text-green-900 ">{Ayat?.name_latin}({Ayat?.name})</h1>
-            <h5 class="fs-3 fw-medium text-green-900 ">Makna: {Ayat?.translations?.id.name}</h5>
+            <h1 className="display-5 fw-medium text-green-900 ">{Ayat?.name_latin}({Ayat?.name})</h1>
+            <h5 className="fs-3 fw-medium text-green-900 ">Makna: {Ayat?.translations?.id.name}</h5>
           </div><div>
-              <h6 class="fs-5 fw-light text-green-900 ">Surah ke- {Ayat?.number}</h6>
-              <h6 class="fs-5 fw-light text-green-900 ">Jumlah Ayat ({Ayat?.number_of_ayah} )</h6>
+              <h6 className="fs-5 fw-light text-green-900 ">Surah ke- {Ayat?.number}</h6>
+              <div className="d-flex justify-content-between">
+                <h6 className="fs-5 fw-light text-green-900 ">Jumlah Ayat ({Ayat?.number_of_ayah} )</h6>
+                {/* <button type="button" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tandai ayat terakhir"> <FontAwesomeIcon icon={faBookBookmark} size="xs" height={14} width={14} /></button> */}
+              </div>
+              
             </div></>)}
         </div>
        
@@ -109,10 +150,11 @@ return(
         </div>
         </span>
         </p>
-       
-       
         
-        <p className=" fs-5 ms-1 p-2">{i+1}.{arti[i]}</p>
+        <p className=" fs-5 ms-1 p-1">{i+1}.{arti[i]}</p>
+        <div className="d-flex justify-content-end p-2">
+          <button type="button" className={`btn  btn-sm ${isSameBookmark(+router.query.id,i+1)?'btn-success':'btn-danger'}`} data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tandai ayat terakhir" onClick={()=>setLastAyat(+router.query.id,i+1)}> <FontAwesomeIcon icon={faBookBookmark} size="xs" height={10} width={10} /></button>
+        </div>
         <hr className=" mb-2" style={{borderTop: "1px dashed #34656d"}}/>
         </div>
       ))}
