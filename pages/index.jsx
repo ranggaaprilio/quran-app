@@ -213,7 +213,7 @@ export default function quran(props) {
                   style={{ color: "white" }}
                 >{`${DefLocation},${DateTime.local()
                   .setZone("UTC+7")
-                  .toFormat("dd MMMM yyyy")} : ${active?.name} ${
+                  .toFormat("dd-MM-yyyy")} : ${active?.name} ${
                   active?.time
                 }`}</p>
               )}
