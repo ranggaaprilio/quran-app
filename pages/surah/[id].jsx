@@ -122,12 +122,12 @@ export default function surah(props) {
   const isSameBookmark = (surah, ayat) => {
     const lastSurah = [surah, ayat];
     const getLastSurah = localStorage.getItem("lastSurah");
+    console.log(getLastSurah);
 
     if (getLastSurah) {
       const lastSurahArray = getLastSurah.split(",");
-
       if (
-        getLastSurah[0] == lastSurah[0] &&
+        lastSurahArray[0] == lastSurah[0] &&
         lastSurahArray[1] == lastSurah[1]
       ) {
         return true;
