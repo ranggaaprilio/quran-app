@@ -9,6 +9,8 @@ import _ from "lodash";
 import moment from "moment-hijri";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookBookmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function quran(props) {
   const [surah, setSurah] = useState([]);
@@ -16,15 +18,15 @@ export default function quran(props) {
   const [DefLocation, setDefLocation] = useState();
   const [active, setActive] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [dateNow, setDateNow] = useState(moment().format("iYYYY/iM/iD"));
+  const [hadits, setHadits] = useState([]);
   const [bookmark, setBookmark] = useState(0);
-  const [allJadwal, setAllJadwal] = useState([]);
 
   useEffect(() => {
     async function getdata() {
       try {
         setIsLoading(true);
         const ipTrack = await fetch("https://json.geoiplookup.io/");
+        const listOfHadist = await GetHadist();
         const jsonData = await ipTrack.json();
         const getIdLocation = await fetch(
           `https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`
@@ -43,17 +45,13 @@ export default function quran(props) {
             "MM"
           )}/${DateTime.local().setZone("UTC+7").toFormat("dd")}`;
         }
-        console.log(url, "responsLocation2");
         const data = await fetch(url);
         const responseJson = await data.json();
-        console.log(responseJson, "responsLocation3");
         if (responseJson.status === true) {
           console.log(responseJson, "code");
           setDefaultJadwal(responseJson.data.jadwal);
           setDefLocation(responseJson.data.daerah);
           const active = findNowJadwal(responseJson);
-          const allData = findAllJadwal(responseJson);
-          setAllJadwal(allData);
           setActive(active);
           setIsLoading(false);
         } else {
@@ -147,70 +145,6 @@ export default function quran(props) {
     };
   };
 
-  const findAllJadwal = (dateAndTime) => {
-    if (!isUndefined(dateAndTime?.status)) {
-      const now = DateTime.local().setZone("UTC+7");
-      const imsakObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.imsak
-      );
-      const subuhObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.subuh
-      );
-      const dzuhurObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.dzuhur
-      );
-      const asharObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.ashar
-      );
-      const maghribObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.maghrib
-      );
-      const isyaObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.isya
-      );
-
-      const imsak = DateTime.fromObject(imsakObject);
-      const subuh = DateTime.fromObject(subuhObject);
-      const dzuhur = DateTime.fromObject(dzuhurObject);
-      const ashar = DateTime.fromObject(asharObject);
-      const maghrib = DateTime.fromObject(maghribObject);
-      const isya = DateTime.fromObject(isyaObject);
-
-      return [
-        {
-          name: "Imsak",
-          time: imsak.toFormat("HH:mm"),
-        },
-        {
-          name: "Subuh",
-          time: subuh.toFormat("HH:mm"),
-        },
-        {
-          name: "Dzuhur",
-          time: dzuhur.toFormat("HH:mm"),
-        },
-        {
-          name: "Ashar",
-          time: ashar.toFormat("HH:mm"),
-        },
-        {
-          name: "Maghrib",
-          time: maghrib.toFormat("HH:mm"),
-        },
-        {
-          name: "Isya",
-          time: isya.toFormat("HH:mm"),
-        },
-      ];
-    }
-  };
-
   const parseToObject = (tanggal, waktu) => {
     const spiltArray = tanggal.split(" ");
     let tanggalArray = spiltArray[1].split("/");
@@ -238,121 +172,132 @@ export default function quran(props) {
     setSurah(find);
   };
 
+  const GetHadist = async () => {
+    try {
+      const data = await fetch("https://api.hadith.gading.dev/books");
+      const responseJson = await data.json();
+      if (responseJson.code === 200) {
+        console.log(responseJson, "code");
+        setHadits(responseJson.data);
+        console.log(hadits, "hadits");
+      } else {
+        throw new Error(responseJson.message);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Fragment>
       <Head>
-        <title>Muslim App</title>
+        <title>Quran App</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta content="text/html;charset=UTF-8" />
       </Head>
-      <main>
-        <div className={styles.box}></div>
-        <div className={styles.container}>
-          <div className={styles.main}>
-            <div
-              className=" container fixed-top "
-              style={{ backgroundColor: "#34656d", height: "40vh" }}
-            >
-              <div className="d-flex justify-content-between align-items-center">
-                <h1
-                  className="fs-2 fw-2 my-2 font-custom mb-3 "
-                  style={{ color: "white" }}
-                >
-                  Muslim App
-                </h1>
-              </div>
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ height: "75%" }}
+      <div className={styles.box}></div>
+      <div className={styles.container}>
+        <main className={styles.main}>
+          <div
+            className=" container fixed-top "
+            style={{ backgroundColor: "#34656d" }}
+          >
+            <div className="d-flex justify-content-between align-items-center">
+              <h1
+                className="fs-2 fw-2 my-2 font-custom mb-3 "
+                style={{ color: "white" }}
               >
-                {isLoading ? (
+                Al Hadits
+              </h1>
+              {isLoading ? (
+                <Skeleton width="300px" />
+              ) : (
+                <p
+                  className="mb-0"
+                  style={{ color: "white" }}
+                >{`${DefLocation},${DateTime.local()
+                  .setZone("UTC+7")
+                  .toFormat("dd MMM")} : ${active?.name} ${active?.time}`}</p>
+              )}
+            </div>
+            <input
+              className="form-control mb-3"
+              type="text"
+              placeholder="Cari nama hadits"
+              aria-label="default input example"
+              onChange={(e) => search(e.target.value)}
+            ></input>
+          </div>
+          <div className="container" style={{ marginTop: 130 }}>
+            <div className="row">
+              {hadits.map((v, i) => (
+                <Fragment key={i}>
                   <div
-                    className="d-flex justify-content-center flex-column"
-                    width="100%"
+                    className={
+                      hadits.length > 2 ? "col-sm-4 mb-2" : "col-sm-6 mb-2"
+                    }
                   >
-                    <Skeleton width="600px" height="30px" />
-                  </div>
-                ) : (
-                  <div>
-                    <p
-                      className="text-lg-start  mx-auto fs-4 fw-2 my-2 font-custom mb-3"
-                      style={{
-                        color: "white",
-                        textAlign: "center",
-                        paddingLeft: "100px",
-                        paddingRight: "100px",
-                      }}
-                    >{`${DefLocation}, ${DateTime.local()
-                      .setZone("UTC+7")
-                      .toFormat("dd MMM")} : ${active?.name} ${
-                      active?.time
-                    }`}</p>
                     <div
-                      className="d-flex justify-content-center text-white"
-                      style={{ flexWrap: "wrap" }}
+                      className="card"
+                      style={{ backgroundColor: "#fffbdf", minWidth: "300px" }}
                     >
-                      {allJadwal.map((item, index) => (
-                        <div>
-                          {" "}
-                          {item.name}:{item.time} |{" "}
+                      <div className="card-body">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <p
+                            className="card-title"
+                            style={{ fontFamily: "fontArab" }}
+                          >
+                            {i + 1 + ". "}
+                          </p>
+                          <h4
+                            dir="rtl"
+                            lang="ar"
+                            className="card-title"
+                            style={{ fontFamily: "fontArab" }}
+                          >
+                            <Link href={`#`} className={styles.whenhover}>
+                              {v.name}{" "}
+                              {bookmark == v.number && (
+                                <FontAwesomeIcon
+                                  icon={faBookBookmark}
+                                  size="xs"
+                                  height={10}
+                                  width={10}
+                                />
+                              )}
+                            </Link>
+                          </h4>
                         </div>
-                      ))}
+                        <p className="card-text text-end">
+                          Jumlah Hadist:&nbsp;{v.available}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                )}
-              </div>
+                </Fragment>
+              ))}
             </div>
           </div>
-        </div>
-        <div className={styles.menuGroup}>
-          <div className={`${styles["main-card"]} card`}>
-            <div className="card-body">
-              <h5 className="card-title">Al Qur'an</h5>
-              <h6 className="card-subtitle mb-2 text-muted">
-                30 Juz, 114 surah
-              </h6>
+        </main>
 
-              <Link href={`/quran`} className={styles.whenhover}>
-                <span
-                  style={{
-                    marginBottom: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  Baca
-                </span>
-              </Link>
-            </div>
-          </div>
-          <div className={`${styles["main-card"]} card `}>
-            <div className="card-body">
-              <h5 className="card-title">Al Hadist</h5>
-              <h6 className="card-subtitle mb-2 text-muted">9 Books</h6>
-              <Link href={`/hadist`} className={styles.whenhover}>
-                <span
-                  style={{
-                    marginBottom: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  Baca
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://portofolio.devapril.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className="fw-bold">&nbsp; Rangga Aprilio Utama</span>
-        </a>
-      </footer>
+        <footer className={styles.footer}>
+          <a
+            href="https://portofolio.devapril.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Powered by{" "}
+            <span className="fw-bold">&nbsp; Rangga Aprilio Utama</span>
+          </a>
+        </footer>
+      </div>
     </Fragment>
   );
 }
