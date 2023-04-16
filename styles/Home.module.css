@@ -65,6 +65,8 @@
 .whenhover:hover{
   /* background-color: #34656d; */
   cursor: pointer;
+  text-decoration: underline;
+  color:#0070f3
 }
 
 .datehijri{

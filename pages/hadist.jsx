@@ -211,16 +211,13 @@ export default function quran(props) {
               >
                 Al Hadits
               </h1>
-              {isLoading ? (
-                <Skeleton width="300px" />
-              ) : (
-                <p
-                  className="mb-0"
-                  style={{ color: "white" }}
-                >{`${DefLocation},${DateTime.local()
-                  .setZone("UTC+7")
-                  .toFormat("dd MMM")} : ${active?.name} ${active?.time}`}</p>
-              )}
+              <h4>
+                <Link href="/">
+                  <span className={styles.whenhover} style={{ color: "white" }}>
+                    kembali
+                  </span>
+                </Link>
+              </h4>
             </div>
             <input
               className="form-control mb-3"
@@ -262,7 +259,10 @@ export default function quran(props) {
                             className="card-title"
                             style={{ fontFamily: "fontArab" }}
                           >
-                            <Link href={`#`} className={styles.whenhover}>
+                            <Link
+                              href={`/hadits/${v.id}`}
+                              className={styles.whenhover}
+                            >
                               {v.name}{" "}
                               {bookmark == v.number && (
                                 <FontAwesomeIcon

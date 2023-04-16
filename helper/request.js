@@ -46,3 +46,12 @@ export const GetTodaySchedule=async()=>{
         return error.message
     }
 }
+
+export const GetHadits=async(id,paging)=>{
+    try {
+        const res=await request.get(`https://api.hadith.gading.dev/books/${id}?range=${paging}`)
+        return res?.data
+    } catch (error) {
+        return error.message
+    }
+}

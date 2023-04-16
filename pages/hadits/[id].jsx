@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Getayat } from "../../helper/request";
+import { GetHadits } from "../../helper/request";
 import ContentLoader from "react-content-loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
@@ -34,7 +34,7 @@ export default function surah(props) {
   const router = useRouter();
   const ActiveBookmark = useRef();
 
-  const [Ayat, setAyat] = useState({});
+  const [info, setInfo] = useState({});
   const [isi, setIsi] = useState([]);
   const [arti, setArti] = useState([]);
   const [number, setNumber] = useState([]);
@@ -43,44 +43,15 @@ export default function surah(props) {
 
   useEffect(() => {
     setLoading(true);
-    const fetchAyat = async () => {
-      const surah = await Getayat(router.query.id);
-      if (surah != false) {
-        let result = surah?.result?.data;
-        // console.log();
-
-        setAyat(result);
-        setIsi(Object.values(result?.text));
-        setArti(Object.values(result?.translations?.id.text));
-        setNumber(Object.keys(result?.text));
-        setLoading(false);
-        setBookmark(localStorage.getItem("lastSurah") || []);
-
-        //check if bookmark
-        const getLastSurah = localStorage.getItem("lastSurah");
-
-        if (getLastSurah) {
-          const lastSurahArray = getLastSurah.split(",");
-
-          //waiting for scrolling
-          setTimeout(() => {
-            if (Array.isArray(lastSurahArray)) {
-              if (+lastSurahArray[0] === +router.query.id) {
-                //make autoscroll to ref
-                // console.log("masuk", ActiveBookmark.current);
-                ActiveBookmark.current.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center",
-                  // inline: "center",
-                });
-              }
-            }
-          }, 1000);
-        }
-      }
+    const fetchHadits = async () => {
+      const data = await GetHadits(router.query.id, "1-10");
+      console.log(data);
+      setIsi(data?.data?.hadiths);
+      setInfo(data?.data);
+      setLoading(false);
     };
+    if (router.query.id) fetchHadits();
 
-    fetchAyat();
     // console.log(surah,'ini surah');
   }, [router]);
 
@@ -140,7 +111,7 @@ export default function surah(props) {
   return (
     <Fragment>
       <Head>
-        <title>{Ayat?.name_latin}</title>
+        <title>{info?.name}</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta content="text/html;charset=UTF-8" />
@@ -160,7 +131,7 @@ export default function surah(props) {
               height={14}
               width={14}
             />
-            <Link href={`/quran`} className={styles.whenhover}>
+            <Link href={`/hadist`} className={styles.whenhover}>
               <span
                 style={{ padding: "16px", marginBottom: 0, cursor: "pointer" }}
               >
@@ -175,77 +146,33 @@ export default function surah(props) {
               <>
                 <div>
                   <h1 className="display-5 fw-medium text-green-900 arab ">
-                    {Ayat?.name_latin}({Ayat?.name})
+                    {info?.name}
                   </h1>
                   <h5 className="fs-3 fw-medium text-green-900 ">
-                    Makna: {Ayat?.translations?.id.name}
+                    Jumlah Riwayat: {info?.available}
                   </h5>
-                </div>
-                <div>
-                  <h6 className="fs-5 fw-light text-green-900 ">
-                    Surah ke- {Ayat?.number}
-                  </h6>
-                  <div className="d-flex justify-content-between">
-                    <h6 className="fs-5 fw-light text-green-900 ">
-                      Jumlah Ayat ({Ayat?.number_of_ayah} )
-                    </h6>
-                    {/* <button type="button" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tandai ayat terakhir"> <FontAwesomeIcon icon={faBookBookmark} size="xs" height={14} width={14} /></button> */}
-                  </div>
                 </div>
               </>
             )}
           </div>
         </div>
       </div>
-      <div>
-        {isi.map((v, i) => (
-          <div
-            className="p-3"
-            ref={
-              isSameBookmark(+router.query.id, i + 1) ? ActiveBookmark : null
-            }
-          >
-            <p dir="rtl" lang="ar" className=" fs-1 ms-2 pb-1 pr-5 arab">
-              {v} &nbsp;
-              <span className="numcontainer">
-                {/* <img style={{display:"inline-block",height:"60px",width:"60px"}} src="/arabic-design-circular-border-ornamental-round-vector-13473464-removebg-preview.png" alt="border" srcset="" /> */}
-                <div className="circle">
-                  <p className="centered" style={{ color: "#212529" }}>
-                    {ConvertToArabicNumbers(number[i])}
-                  </p>
-                </div>
-              </span>
-            </p>
+      {isi.map((v, i) => (
+        <div
+          className="p-3"
+          ref={isSameBookmark(+router.query.id, i + 1) ? ActiveBookmark : null}
+        >
+          <p dir="rtl" lang="ar" className=" fs-1 ms-2 pb-1 pr-5 arab">
+            {v.arab} &nbsp;
+          </p>
 
-            <p className=" fs-5 ms-1 p-1">
-              {i + 1}.{arti[i]}
-            </p>
-            <div className="d-flex justify-content-end p-2">
-              <button
-                type="button"
-                className={`btn  btn-sm ${
-                  isSameBookmark(+router.query.id, i + 1)
-                    ? "btn-success"
-                    : "btn-danger"
-                }`}
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                data-bs-title="Tandai ayat terakhir"
-                onClick={() => setLastAyat(+router.query.id, i + 1)}
-              >
-                {" "}
-                <FontAwesomeIcon
-                  icon={faBookBookmark}
-                  size="xs"
-                  height={10}
-                  width={10}
-                />
-              </button>
-            </div>
-            <hr className=" mb-2" style={{ borderTop: "1px dashed #34656d" }} />
-          </div>
-        ))}
-      </div>
+          <p className=" fs-5 ms-1 p-1">
+            {i + 1}.{v.id}
+          </p>
+          <hr className=" mb-2" style={{ borderTop: "1px dashed #34656d" }} />
+        </div>
+      ))}
+      <div></div>
       {/* <div ref={ActiveBookmark}>TEst</div> */}
     </Fragment>
   );
