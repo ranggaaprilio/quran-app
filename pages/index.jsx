@@ -356,12 +356,3 @@ export default function quran(props) {
     </Fragment>
   );
 }
-
-export async function getStaticProps() {
-  const allSurah = await GetSurah();
-  return {
-    props: {
-      list: { allSurah },
-    },
-  };
-}
