@@ -54,18 +54,19 @@ export default function surah(props) {
         setArti(Object.values(result?.translations?.id.text));
         setNumber(Object.keys(result?.text));
         setLoading(false);
-        setBookmark(localStorage.getItem("lastSurah") || []);
+        setBookmark(localStorage.getItem("MultilastSurah") || []);
 
         //check if bookmark
-        const getLastSurah = localStorage.getItem("lastSurah");
+        const getLastSurah = localStorage.getItem("MultilastSurah");
 
         if (getLastSurah) {
-          const lastSurahArray = getLastSurah.split(",");
+          //parse to array
+          const parseArray = JSON.parse(getLastSurah);
 
           //waiting for scrolling
           setTimeout(() => {
-            if (Array.isArray(lastSurahArray)) {
-              if (+lastSurahArray[0] === +router.query.id) {
+            if (Array.isArray(parseArray)) {
+              if (parseArray.find((v) => v[router.query.id])) {
                 //make autoscroll to ref
                 // console.log("masuk", ActiveBookmark.current);
                 ActiveBookmark.current.scrollIntoView({
@@ -119,17 +120,50 @@ export default function surah(props) {
     }
   };
 
-  const isSameBookmark = (surah, ayat) => {
-    const lastSurah = [surah, ayat];
-    const getLastSurah = localStorage.getItem("lastSurah");
-    console.log(getLastSurah);
+  const setMultiLastAyat = (surah, ayat) => {
+    //set to localstorage
+    const lastSurah = { [surah.toString()]: ayat };
+    const getLastSurah = localStorage.getItem("MultilastSurah");
 
     if (getLastSurah) {
-      const lastSurahArray = getLastSurah.split(",");
-      if (
-        lastSurahArray[0] == lastSurah[0] &&
-        lastSurahArray[1] == lastSurah[1]
-      ) {
+      //change to array
+      const parseArray = JSON.parse(getLastSurah);
+      const findSameSurah = parseArray.find((v) => v[surah] === ayat);
+      if (findSameSurah) {
+        //if same surah
+        const filterSameSurah = parseArray.filter((v) => !v[surah]);
+        localStorage.setItem("MultilastSurah", JSON.stringify(filterSameSurah));
+        setBookmark([]);
+        alert(
+          `QS. ${Ayat?.name_latin} Ayat ${ayat} telah di hapus dari daftar bacaan terakhir`
+        );
+      } else {
+        //if not same surah replace last surah with new surah
+        const filterSameSurah = parseArray.filter((v) => !v[surah]);
+        const newLastSurah = [...filterSameSurah, lastSurah];
+        localStorage.setItem("MultilastSurah", JSON.stringify(newLastSurah));
+        setBookmark(newLastSurah);
+        alert(`QS. ${Ayat?.name_latin} Ayat ${ayat} telah ditandai`);
+      }
+    } else {
+      const lastSurahArray = [];
+      lastSurahArray.push(lastSurah);
+      localStorage.setItem("MultilastSurah", JSON.stringify(lastSurahArray));
+      setBookmark(lastSurah);
+      alert(`QS. ${Ayat?.name_latin} Ayat ${ayat} telah ditandai`);
+    }
+  };
+
+  const isSameBookmark = (surah, ayat) => {
+    const lastSurah = [surah, ayat];
+    const getLastSurah = localStorage.getItem("MultilastSurah");
+
+    if (getLastSurah) {
+      //parse to array
+      const parseArray = JSON.parse(getLastSurah);
+      const findSameSurah = parseArray.find((v) => v[surah] === ayat);
+
+      if (findSameSurah) {
         return true;
       } else {
         return false;
@@ -231,7 +265,7 @@ export default function surah(props) {
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 data-bs-title="Tandai ayat terakhir"
-                onClick={() => setLastAyat(+router.query.id, i + 1)}
+                onClick={() => setMultiLastAyat(+router.query.id, i + 1)}
               >
                 {" "}
                 <FontAwesomeIcon

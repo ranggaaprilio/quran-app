@@ -24,10 +24,10 @@ export default function quran(props) {
   useEffect(() => {
     const { data } = props.list.allSurah.result;
     setSurah(data);
-    const getBookmark = localStorage.getItem("lastSurah");
+    const getBookmark = localStorage.getItem("MultilastSurah");
     if (getBookmark) {
-      const lastSurah = getBookmark.split(",");
-      setBookmark(lastSurah[0]);
+      const lastSurah = JSON.parse(getBookmark);
+      setBookmark(lastSurah);
     }
   }, []);
 
@@ -43,6 +43,15 @@ export default function quran(props) {
     });
     console.log(find);
     setSurah(find);
+  };
+
+  const checkBookmark = (id) => {
+    for (let i = 0; i < bookmark.length; i++) {
+      if (id in bookmark[i]) {
+        return true; // Kunci ditemukan
+      }
+    }
+    return false; // Kunci tidak ditemukan
   };
 
   return (
@@ -120,7 +129,7 @@ export default function quran(props) {
                               className={styles.whenhover}
                             >
                               {v.name}{" "}
-                              {bookmark == v.number && (
+                              {checkBookmark(v.number) && (
                                 <FontAwesomeIcon
                                   icon={faBookBookmark}
                                   size="xs"
