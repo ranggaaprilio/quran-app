@@ -27,16 +27,21 @@ export default function quran(props) {
         const ipTrack = await fetch("https://json.geoiplookup.io/");
         const jsonData = await ipTrack.json();
         const getIdLocation = await fetch(
-          `https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`
+          `https://api.myquran.com/v2/sholat/kota/cari/${
+            jsonData.city?.split(" ")[0]
+          }`
         );
         const responsLocation = await getIdLocation.json();
         console.log(responsLocation, "responsLocation");
-        let url = `https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat(
+        let url = `https://api.myquran.com/v2/sholat/jadwal/1301/${DateTime.local().toFormat(
           "yyyy"
         )}/${DateTime.local().toFormat("MM")}/${DateTime.local()
           .setZone("UTC+7")
           .toFormat("dd")}`;
-        if (responsLocation.status === true) {
+        if (
+          responsLocation.status === true &&
+          responsLocation.data.length > 0
+        ) {
           url = `https://api.myquran.com/v1/sholat/jadwal/${
             responsLocation.data[0].id
           }/${DateTime.local().toFormat("yyyy")}/${DateTime.local().toFormat(
@@ -254,14 +259,6 @@ export default function quran(props) {
               className=" container fixed-top "
               style={{ backgroundColor: "#34656d", height: "40vh" }}
             >
-              <div className="d-flex justify-content-between align-items-center">
-                <h1
-                  className="fs-2 fw-2 my-2 font-custom mb-3 "
-                  style={{ color: "white" }}
-                >
-                  Muslim App
-                </h1>
-              </div>
               <div
                 className="d-flex justify-content-center align-items-center"
                 style={{ height: "75%" }}
@@ -275,6 +272,12 @@ export default function quran(props) {
                   </div>
                 ) : (
                   <div>
+                    <h1
+                      className="fs-2 fw-2 my-2 font-custom mb-3 mx-auto "
+                      style={{ color: "white", textAlign: "center" }}
+                    >
+                      Muslim App
+                    </h1>
                     <p
                       className="text-lg-start  mx-auto fs-4 fw-2 my-2 font-custom mb-3"
                       style={{
