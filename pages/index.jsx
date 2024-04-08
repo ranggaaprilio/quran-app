@@ -42,7 +42,7 @@ export default function quran(props) {
           responsLocation.status === true &&
           responsLocation.data.length > 0
         ) {
-          url = `https://api.myquran.com/v1/sholat/jadwal/${
+          url = `https://api.myquran.com/v2/sholat/jadwal/${
             responsLocation.data[0].id
           }/${DateTime.local().toFormat("yyyy")}/${DateTime.local().toFormat(
             "MM"
@@ -296,7 +296,7 @@ export default function quran(props) {
                       style={{ flexWrap: "wrap" }}
                     >
                       {allJadwal.map((item, index) => (
-                        <div>
+                        <div key={index}>
                           {" "}
                           {item.name}:{item.time} |{" "}
                         </div>

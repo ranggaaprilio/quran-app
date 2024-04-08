@@ -25,39 +25,8 @@ export default function quran(props) {
     async function getdata() {
       try {
         setIsLoading(true);
-        const ipTrack = await fetch("https://json.geoiplookup.io/");
         const listOfHadist = await GetHadist();
-        const jsonData = await ipTrack.json();
-        const getIdLocation = await fetch(
-          `https://api.myquran.com/v1/sholat/kota/cari/${jsonData.city}`
-        );
-        const responsLocation = await getIdLocation.json();
-        console.log(responsLocation, "responsLocation");
-        let url = `https://api.myquran.com/v1/sholat/jadwal/1301/${DateTime.local().toFormat(
-          "yyyy"
-        )}/${DateTime.local().toFormat("MM")}/${DateTime.local()
-          .setZone("UTC+7")
-          .toFormat("dd")}`;
-        if (responsLocation.status === true) {
-          url = `https://api.myquran.com/v1/sholat/jadwal/${
-            responsLocation.data[0].id
-          }/${DateTime.local().toFormat("yyyy")}/${DateTime.local().toFormat(
-            "MM"
-          )}/${DateTime.local().setZone("UTC+7").toFormat("dd")}`;
-        }
-        const data = await fetch(url);
-        const responseJson = await data.json();
-        if (responseJson.status === true) {
-          console.log(responseJson, "code");
-          setDefaultJadwal(responseJson.data.jadwal);
-          setDefLocation(responseJson.data.daerah);
-          const active = findNowJadwal(responseJson);
-          setActive(active);
-          setIsLoading(false);
-        } else {
-          throw new Error(responseJson.message);
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
         setIsLoading(false);
@@ -65,98 +34,6 @@ export default function quran(props) {
     }
     getdata();
   }, []);
-
-  const findNowJadwal = (dateAndTime) => {
-    if (!isUndefined(dateAndTime?.status)) {
-      const now = DateTime.local().setZone("UTC+7");
-      const imsakObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.imsak
-      );
-      const subuhObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.subuh
-      );
-      const dzuhurObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.dzuhur
-      );
-      const asharObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.ashar
-      );
-      const maghribObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.maghrib
-      );
-      const isyaObject = parseToObject(
-        dateAndTime?.data.jadwal.tanggal,
-        dateAndTime?.data.jadwal.isya
-      );
-
-      const imsak = DateTime.fromObject(imsakObject);
-      const subuh = DateTime.fromObject(subuhObject);
-      const dzuhur = DateTime.fromObject(dzuhurObject);
-      const ashar = DateTime.fromObject(asharObject);
-      const maghrib = DateTime.fromObject(maghribObject);
-      const isya = DateTime.fromObject(isyaObject);
-      if (now < imsak) {
-        return {
-          name: "Imsak",
-          time: imsak.toFormat("HH:mm"),
-        };
-      } else if (now < subuh) {
-        return {
-          name: "Subuh",
-          time: subuh.toFormat("HH:mm"),
-        };
-      } else if (now < dzuhur) {
-        return {
-          name: "Dzuhur",
-          time: dzuhur.toFormat("HH:mm"),
-        };
-      } else if (now < ashar) {
-        return {
-          name: "Ashar",
-          time: ashar.toFormat("HH:mm"),
-        };
-      } else if (now < maghrib) {
-        return {
-          name: "Maghrib",
-          time: maghrib.toFormat("HH:mm"),
-        };
-      } else if (now < isya) {
-        return {
-          name: "Isya",
-          time: isya.toFormat("HH:mm"),
-        };
-      } else {
-        console.log(isya, "isya");
-        return {
-          name: "Isya",
-          time: isya.toFormat("HH:mm"),
-        };
-      }
-    }
-
-    return {
-      name: "Not Found",
-      time: "",
-    };
-  };
-
-  const parseToObject = (tanggal, waktu) => {
-    const spiltArray = tanggal.split(" ");
-    let tanggalArray = spiltArray[1].split("/");
-    let waktuArray = waktu.split(":");
-    return {
-      year: tanggalArray[2],
-      month: tanggalArray[1],
-      day: tanggalArray[0],
-      hour: waktuArray[0],
-      minute: waktuArray[1],
-    };
-  };
 
   const search = (data = "") => {
     console.log(data, "data");
@@ -229,60 +106,69 @@ export default function quran(props) {
           </div>
           <div className="container" style={{ marginTop: 130 }}>
             <div className="row">
-              {hadits.map((v, i) => (
-                <Fragment key={i}>
-                  <div
-                    className={
-                      hadits.length > 2 ? "col-sm-4 mb-2" : "col-sm-6 mb-2"
-                    }
-                  >
+              {isLoading ? (
+                <div className="col-sm-12">
+                  <Skeleton count={5} direction="ltr" enableAnimation="true" />
+                </div>
+              ) : (
+                hadits.map((v, i) => (
+                  <Fragment key={i}>
                     <div
-                      className="card"
-                      style={{ backgroundColor: "#fffbdf", minWidth: "300px" }}
+                      className={
+                        hadits.length > 2 ? "col-sm-4 mb-2" : "col-sm-6 mb-2"
+                      }
                     >
-                      <div className="card-body">
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <p
-                            className="card-title"
-                            style={{ fontFamily: "fontArab" }}
+                      <div
+                        className="card"
+                        style={{
+                          backgroundColor: "#fffbdf",
+                          minWidth: "300px",
+                        }}
+                      >
+                        <div className="card-body">
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
                           >
-                            {i + 1 + ". "}
-                          </p>
-                          <h4
-                            dir="rtl"
-                            lang="ar"
-                            className="card-title"
-                            style={{ fontFamily: "fontArab" }}
-                          >
-                            <Link
-                              href={`/hadits/${v.id}`}
-                              className={styles.whenhover}
+                            <p
+                              className="card-title"
+                              style={{ fontFamily: "fontArab" }}
                             >
-                              {v.name}{" "}
-                              {bookmark == v.number && (
-                                <FontAwesomeIcon
-                                  icon={faBookBookmark}
-                                  size="xs"
-                                  height={10}
-                                  width={10}
-                                />
-                              )}
-                            </Link>
-                          </h4>
+                              {i + 1 + ". "}
+                            </p>
+                            <h4
+                              dir="rtl"
+                              lang="ar"
+                              className="card-title"
+                              style={{ fontFamily: "fontArab" }}
+                            >
+                              <Link
+                                href={`/hadits/${v.id}`}
+                                className={styles.whenhover}
+                              >
+                                {v.name}{" "}
+                                {bookmark == v.number && (
+                                  <FontAwesomeIcon
+                                    icon={faBookBookmark}
+                                    size="xs"
+                                    height={10}
+                                    width={10}
+                                  />
+                                )}
+                              </Link>
+                            </h4>
+                          </div>
+                          <p className="card-text text-end">
+                            Jumlah Hadist:&nbsp;{v.available}
+                          </p>
                         </div>
-                        <p className="card-text text-end">
-                          Jumlah Hadist:&nbsp;{v.available}
-                        </p>
                       </div>
                     </div>
-                  </div>
-                </Fragment>
-              ))}
+                  </Fragment>
+                ))
+              )}
             </div>
           </div>
         </main>
