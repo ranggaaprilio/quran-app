@@ -40,6 +40,7 @@ export default function surah(props) {
   const [number, setNumber] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bookmark, setBookmark] = useState([]);
+  const [juz, setJuz] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -55,6 +56,7 @@ export default function surah(props) {
         setNumber(Object.keys(result?.text));
         setLoading(false);
         setBookmark(localStorage.getItem("MultilastSurah") || []);
+        setJuz(result?.lastJuz || []);
 
         //check if bookmark
         const getLastSurah = localStorage.getItem("MultilastSurah");
@@ -240,6 +242,7 @@ export default function surah(props) {
             }
           >
             <p dir="rtl" lang="ar" className=" fs-1 ms-2 pb-1 pr-5 arab">
+              {/* render ayat */}
               {v} &nbsp;
               <span className="numcontainer">
                 {/* <img style={{display:"inline-block",height:"60px",width:"60px"}} src="/arabic-design-circular-border-ornamental-round-vector-13473464-removebg-preview.png" alt="border" srcset="" /> */}
@@ -254,7 +257,17 @@ export default function surah(props) {
             <p className=" fs-5 ms-1 p-1">
               {i + 1}.{arti[i]}
             </p>
-            <div className="d-flex justify-content-end p-2">
+            <div className="d-flex justify-content-between p-2">
+              {
+                //check if last ayat
+                juz.find((v) => +v.ayah === i + 1) ? (
+                  <div className="alert alert-success" role="alert">
+                    Akhir dari Juz {juz.find((v) => v.ayah === i + 1).juz}
+                  </div>
+                ) : (
+                  <div></div>
+                )
+              }
               <button
                 type="button"
                 className={`btn  btn-sm ${
@@ -266,6 +279,7 @@ export default function surah(props) {
                 data-bs-placement="top"
                 data-bs-title="Tandai ayat terakhir"
                 onClick={() => setMultiLastAyat(+router.query.id, i + 1)}
+                style={{ height: "fit-content" }}
               >
                 {" "}
                 <FontAwesomeIcon
